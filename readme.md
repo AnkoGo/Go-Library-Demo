@@ -22,141 +22,141 @@
 # 目录导航  
 
 1. archive/tar： 
-			-  **[archive/tar](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_tar.go)** 
+	-  **[archive/tar](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_tar.go)** 
 	-  **[archive/tar](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_tar_01.go)** 
 	-  **[archive/tar](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_tar_02.go)** 
 2. archive/zip：
-			-  **[archive/zip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_zip_01.go)**
+	-  **[archive/zip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_zip_01.go)**
 	-  **[archive/zip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_zip_02.go)**
 	-  **[archive/zip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/archive_zip_03.go)**
 3. bufio：
-			-  **[bufio_Reader](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bufio_Reader.go)** 
+	-  **[bufio_Reader](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bufio_Reader.go)** 
 	-  **[bufio_Writer](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bufio_Writer.go)** 
 	-  **[bufio_Scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bufio_Scanner_01.go)** 
 	-  **[bufio_Scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bufio_Scanner_02.go)** 
 	-  **[bufio_Scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bufio_Scanner_03.go)** 
 4. bytes+Strings：
-			-  **[bytes+Strings](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bytes%2Bstrings_01.go)**
+	-  **[bytes+Strings](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bytes%2Bstrings_01.go)**
 	-  **[bytes_Buffer](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bytes_Buffer_01.go)**
 	-  **[bytes_Reader](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bytes_Reader_01.go)**
 5. compress/bzip2：
-			-  **[compress/bzip2](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_bzip2.go)** 
+	-  **[compress/bzip2](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_bzip2.go)** 
 6. compress/flate：
-			-  **[compress/flate](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_flate.go)** 
+	-  **[compress/flate](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_flate.go)** 
 7. compress/gzip：
-			-  **[compress/gzip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_gzip.go)** 
+	-  **[compress/gzip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_gzip.go)** 
 	-  **[compress/gzip](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_gzip_01.go)** 
 8. compress/lzw：
-			-  **[compress/lzw](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_lzw.go)** 
+	-  **[compress/lzw](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_lzw.go)** 
 9. compress/zlib：
-			-  **[compress/zlib](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_zlib.go)** 
+	-  **[compress/zlib](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/compress_zlib.go)** 
 10. database/sql：
-			-  **[database/sql](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql.go)**  
-			-  **[database/sql](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_01.go)** 
-			-  **[database/sql](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_regester().go)** 
+	-  **[database/sql](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql.go)**  
+	-  **[database/sql](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_01.go)** 
+	-  **[database/sql](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_regester().go)** 
 11. database/sql/driver：
-      		-  **[database/sql/driver](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_driver.go)**  
+	-  **[database/sql/driver](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_driver.go)**  
 12. encoding：
-      		-  **[encoding]()**  
+	-  **[encoding]()**  
 13. encoding/ascii85：
-      		-  **[encoding/ascii85](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_ascii85.go)**  
+	-  **[encoding/ascii85](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_ascii85.go)**  
 14. encoding/asn1：
-       -  **[encoding/asn1](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_asn1.go)**  
-       -  **[encoding/asn1](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_asn1_01.go)**
+	-  **[encoding/asn1](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_asn1.go)**  
+	-  **[encoding/asn1](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_asn1_01.go)**
 15. encoding/base32：
-      		-  **[encoding/base32](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_base32.go)**  
+	-  **[encoding/base32](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_base32.go)**  
 16. encoding/base64：
-      		-  **[encoding/base64](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_base64.go)**  
+	-  **[encoding/base64](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_base64.go)**  
 17. encoding/binary：
-      		-  **[encoding/binary](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_binary.go)**  
+	-  **[encoding/binary](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_binary.go)**  
 18. encoding/csv：
-      		-  **[encoding/csv](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_csv.go)**  
+	-  **[encoding/csv](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_csv.go)**  
 19. encoding/gob：
-       -  **[encoding/gob](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_gob.go)** 
-       -  **[encoding/gob](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_gob_01.go)** 
+	-  **[encoding/gob](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_gob.go)** 
+	-  **[encoding/gob](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_gob_01.go)** 
 20. encoding/hex：
-      		-  **[encoding/hex](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_hex.go)**  
+	-  **[encoding/hex](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_hex.go)**  
 21. encoding/json：
-       -  **[encoding/json](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_json_01.go)** 
-       -  **[encoding/json](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_json_02.go)**  
+	-  **[encoding/json](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_json_01.go)** 
+	-  **[encoding/json](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_json_02.go)**  
 22. encoding/pem：
-      		-  **[encoding/pem](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_pem.go)** 
+	-  **[encoding/pem](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_pem.go)** 
 23. encoding/xml：
-       -  **[encoding/xml](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_xml.go)** 
-       -  **[encoding/xml](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_xml_01.go)** 
-       -  **[encoding/xml](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_xml_02.go)**
+	-  **[encoding/xml](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_xml.go)** 
+	-  **[encoding/xml](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_xml_01.go)** 
+	-  **[encoding/xml](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_xml_02.go)**
 24. flag：
-       -  **[flag](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/flag_01.go)** 
-       -  **[flag](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/flag_02.go)**
-       -  **[flag](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/flag_03.go)** 
+	-  **[flag](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/flag_01.go)** 
+	-  **[flag](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/flag_02.go)**
+	-  **[flag](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/flag_03.go)** 
 25. fmt：
-      		-  **[fmt](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/fmt.go)**  
+	-  **[fmt](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/fmt.go)**  
 26. io：
-      		-  **[io](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_01.go)**  
+	-  **[io](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_01.go)**  
 27. io/ioutil：
-       -  **[io/ioutil](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_ioutil_01.go)** 
-       -  **[io/ioutil](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_ioutil_02.go)**  
+	-  **[io/ioutil](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_ioutil_01.go)** 
+	-  **[io/ioutil](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_ioutil_02.go)**  
 28. log：
-      		-  **[log](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/log.go)**  
+	-  **[log](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/log.go)**  
 29. log/syslog：
-      		-  **[log/syslog]()**  
+	-  **[log/syslog]()**  
 30. math：
-      		-  **[math](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_01.go)**  
+	-  **[math](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_01.go)**  
 31. math/big：
-      		-  **[math/big](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_big.go)**  
+	-  **[math/big](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_big.go)**  
 32. math/cmplx：
-      		-  **[math/cmplx]()**  
+	-  **[math/cmplx]()**  
 33. math/rand：
-      		-  **[math/rand](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
+	-  **[math/rand](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
 34. os：
-       -  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_02.go)**  
-       -  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_03.go)** 
-       -  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_04.go)** 
-       -  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_05.go)**  
+	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_02.go)** 
+	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_03.go)** 
+	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_04.go)** 
+	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_05.go)** 
 35. os/exec：
-       -  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_01.go)** 
-       -  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_02.go)** 
-       -  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_03.go)** 
-       -  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_04.go)** 
+	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_01.go)** 
+	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_02.go)** 
+	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_03.go)** 
+	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_04.go)** 
 36. os/signal：
-       -  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_01.go)** 
-       -  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_02.go)**
-       -  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_03.go)**  
+	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_01.go)** 
+	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_02.go)**
+	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_03.go)**  
 37. os/user：
-      		-  **[os/user](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_user_01.go)**  
+	-  **[os/user](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_user_01.go)**  
 38. path：
-      		-  **[path](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_01.go)**  
+	-  **[path](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_01.go)**  
 39. path/filepath：
-      		-  **[path/filepath](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_filepath.go)**  
+	-  **[path/filepath](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_filepath.go)**  
 40. reflect：
-       -  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)** 
-       -  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)**
-       -  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)**  
+	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)** 
+	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)**
+	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)**  
 41. regexp：
-      		-  **[regexp](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp.go)**  
+	-  **[regexp](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp.go)**  
 42. regexp/syntax：
-      		-  **[regexp/syntax](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp_syntax.go)**  
+	-  **[regexp/syntax](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp_syntax.go)**  
 43. sort：
-      		-  **[sort](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sort_01.go)** 
+	-  **[sort](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sort_01.go)** 
 44. strconv：
-      		-  **[strconv](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/strconv_01.go)**   
+	-  **[strconv](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/strconv_01.go)**   
 45. text/scanner：
-        -  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_01.go)** 
-        -  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_02.go)** 
+	-  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_01.go)** 
+	-  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_02.go)** 
 46. text/tabwriter：
-       -  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_01.go)** 
-       -  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_02.go)** 
+	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_01.go)** 
+	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_02.go)** 
 47. text/template：
-      		-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_01.go)**  
+	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_01.go)**  
 48. time：
-        -  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_01.go)** 
-        -  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_02.go)** 
+	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_01.go)** 
+	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_02.go)** 
 49. unicode：
-      		-  **[unicode](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_01.go)**  
+	-  **[unicode](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_01.go)**  
 50. unicode/utf16：
-      		-  **[unicode/utf16]()**  
+	-  **[unicode/utf16]()**  
 51. unicode/utf8：
-      		-  **[unicode/utf8](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf8_01.go)**  
+	-  **[unicode/utf8](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf8_01.go)**  
 
 
 # 后续跟新：
