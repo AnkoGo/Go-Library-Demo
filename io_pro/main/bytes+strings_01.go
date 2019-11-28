@@ -331,15 +331,15 @@ func main9900() {
 
 
 
-	fmt.Println(strings.FieldsFunc("中华人民共和国人中国",SplitByRen))//[中华 名共和国 中国]
+	fmt.Println(strings.FieldsFunc("中华人民共和国人中国",SplitByRen))//[中华 民共和国 中国]
 	//这个确实是go的不足之处，从这里我们无法得知怎么区分这个列表的元素
-	fieldsFunc_s := strings.FieldsFunc("  中华a人  名共和国 a人中 国", SplitByRen)
-	fmt.Println(fieldsFunc_s)//[  中华a   名共和国 a 中 国]
+	fieldsFunc_s := strings.FieldsFunc("  中华a人  民共和国 a人中 国", SplitByRen)
+	fmt.Println(fieldsFunc_s)//[  中华a   民共和国 a 中 国]
 	for key, value := range fieldsFunc_s {
 		fmt.Println(key,value)//好吧，系统知道怎么区分
 		//输出：
 		//	0   中华a
-		//	1   名共和国 a
+		//	1   民共和国 a
 		//	2 中 国
 	}
 
@@ -347,7 +347,7 @@ func main9900() {
 	//如果s不包含sep且sep不为空，则Split返回长度为1的切片，其唯一元素为s。
 	//如果sep为空，则Split在每个UTF-8序列后拆分。 如果s和sep均为空，则Split返回一个空切片。
 	//等于SplitN，计数为-1。
-	fmt.Println(strings.Split("中华人民共和国人中国","人"))//[中华 名共和国 中国]
+	fmt.Println(strings.Split("中华人民共和国人中国","人"))//[中华 民共和国 中国]
 	fmt.Println(strings.Split("中华人民共和国人民中国","人民"))//[中华 共和国 中国]
 	fmt.Println(strings.Split(" abc "," "))//[ abc ],前面没值补空格
 	fmt.Println(strings.Split("abc"," "))//[abc]
@@ -399,10 +399,10 @@ func main9900() {
 	fmt.Println(strings.SplitAfterN("cabcdaefgaz","a",2))//[ca bcdaefgaz]
 	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","中",2))//[中 华人民共和国人民国中]
 	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","中",3))//[中 华人民共和国人民国中 ],注意这里
-	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","人",3))//[中华人 民共和国人 名国中]
+	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","人",3))//[中华人 民共和国人 民国中]
 	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","",3))//[中 华 人民共和国人民国中]，注意
 	fmt.Println(strings.SplitAfterN(" 中华人民共和国人民国中 "," ",30))//[  中华人民共和国人民国中  ]
-	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","人",30))//[中华人 民共和国人 名国中]
+	fmt.Println(strings.SplitAfterN("中华人民共和国人民国中","人",30))//[中华人 民共和国人 民国中]
 
 	// Join连接切片的元素以创建单个字符串。 分隔符字符串sep放置在结果字符串中的元素之间。
 	ls111:=[]string{"a", "b", "c",}
