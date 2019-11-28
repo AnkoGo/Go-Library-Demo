@@ -309,8 +309,9 @@ func ExampleFscanln() {
 		// 换行符算作空格。 它返回成功扫描的项目数。 如果该数目少于参数数目，则err将报告原因。
 
 		// Fscanln与Fscan类似，但是Fscanln在换行符处停止扫描并且返回了，并且在最后一个项目之后必须有换行符或EOF。
-		// Fscanln名称说明：F的说明同上，ln要么表示每次读取或者写入完成后是否在末尾数据加上换行符，要么表示是否在换行处进行结束该次读取！
-		// 很明显，这里表示的是第二种情况！
+		// Fscanln名称说明：F的说明同上，在我们过往的学习中都可以发现：ln结尾要么表示每次读取或者写入完成后是否在
+		// 末尾数据加上换行符，要么表示是否在换行处进行结束该次读取(会将换行符读取出来)！很明显，这个scan对象表示
+		// 的都是是第2种情况（结束该次读取）！
 		n, err := fmt.Fscanln(r, &a, &b, &c)
 		if err == io.EOF {//判断是否是文件的末尾了
 			break
@@ -327,6 +328,107 @@ func ExampleFscanln() {
 	// 3: dmr, 1771, 1.618034
 	// 3: ken, 271828, 3.141590
 }
+
+func testHavedLnOrNot(){
+	
+	//下面对scan中是否带ln进行讲解
+	var a byte
+	var b int
+	var b1 int
+	var c int
+	stdin := bufio.NewReader(os.Stdin)
+
+	for {
+		fmt.Println("请输入一个byte值：")
+		count, err := fmt.Fscan(stdin, &a)
+		//stdin.ReadString('\n')
+
+		//count, err := fmt.Fscan(stdin, &a)
+		//stdin.ReadString('\n')
+		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("count:%d\n", count)
+			fmt.Println("您的输入有误，请重新输入")
+			stdin.ReadString('\n')
+			continue
+		}
+		fmt.Println("输出：", a)
+		break
+	}
+
+
+
+	for {
+		fmt.Println("请输入一个int值：")
+		//没ln说明了填充满所有的变量为止，而不是以换行符为停止符！同时遇到换行符也当做间隔多个输入值的空格！
+		count, err := fmt.Fscan(stdin, &b, &b1)
+		//下面这这种方式也可以，有ln说明了是以换行符为停止符来停止scan的！而不是以填满变量为止！即时没填满也会停止scan
+		//count, err := fmt.Fscanln(stdin, &b)
+		//stdin.ReadString('\n')//不应该放在这里
+
+		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("count:%d\n", count)
+			fmt.Println("您的输入有误，请重新输入")
+			//如果输错了，对于scan来说，那么\n肯定没被读取扫描出来的,因此我们要消耗掉\n之前的所有因错误而停止扫描的字符串，否则我们在输入时候会被要求多输入一个换行符
+			//对于有ln的scan,则不需要下面的这行代码，因为scanln会自动读取换行符，而scan不会！
+			stdin.ReadString('\n')
+			continue
+		}
+		//如果输对了，那么Fscan会把\n当做空格，每个空格前面的一个字符串被当做输入值，空格分隔的所有输入的字符串值被赋值给所有变量后会自动结束scan
+		//所以，\n还是被消耗掉了。
+		//对于Fscanln不会把换行符当做空格，同时会在换行符处停止扫描，即使变量还没被完全填充！！
+		//不过既然能来到这里，说明了输入对了，那么我们会在读取完换行符后就 会停止整个扫描，所以这里就不必写
+		//stdin.ReadString('\n')了，否则我们在输入时候会被要求多输入一个换行符
+		fmt.Println("输出1：", b)
+		fmt.Println("输出2：", b1)
+		break
+	}
+
+
+	for {
+		fmt.Println("请输入一个int值：")
+		count, err := fmt.Fscan(stdin, &c)
+		//stdin.ReadString('\n')
+
+		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("count:%d\n", count)
+			fmt.Println("您的输入有误，请重新输入")
+			stdin.ReadString('\n')
+			continue
+		}
+		fmt.Println("输出：", c)
+		break
+	}
+	//输出：
+	//请输入一个byte值：
+	//a
+	//expected integer
+	//count:0
+	//您的输入有误，请重新输入
+	//请输入一个byte值：
+	//v
+	//expected integer
+	//count:0
+	//您的输入有误，请重新输入
+	//请输入一个byte值：
+	//97
+	//输出： 97
+	//请输入一个int值：
+	//11
+	//
+	//
+	//
+	//22
+	//输出1： 11
+	//输出2： 22
+	//请输入一个int值：
+	//33
+	//输出： 33
+	
+}
+
 
 func ExampleSscanf() {
 	var name string
@@ -687,6 +789,7 @@ func main346720()  {
 	//ExampleErrorf()
 	//ExampleFscanf()
 	//ExampleFscanln()
+	//testHavedLnOrNot()
 	//ExampleSscanf()
 	//ExamplePrint()
 	//ExamplePrintln()
