@@ -1459,7 +1459,16 @@ Josie
 	// by adding the variants after the clone is made.
 	// Clone返回模板的副本，包括所有关联的模板。 不会复制实际的表示形式，但是会复制关联模板的名称空间，因此在副本中进一步调用Parse会将模板添加到副本中，
 	// 而不是原始模板中。 克隆可用于准备通用模板，并将其与其他模板的变体定义一起使用，方法是在完成克隆后添加变体。
-	T_clone, err := t.Clone()
+	TestEmptyTemplateCloneCrash:=func () {
+		t1 := template.New("base")
+		_, e := t1.Clone() //以前版本会报错这里，如今不会了
+		check_err_template(e)
+	}
+	TestEmptyTemplateCloneCrash()
+
+	fmt.Println("--------------")
+
+	T_clone, err := t.Clone()//这里我们也可以用Must()方法来接收然后提取出template对象，略了！
 	check_err_template(err)
 	fmt.Printf("===t.Lookup(\"letter\"):%+v\n", t.Lookup("letter"))
 	fmt.Printf("===t.Lookup(\"letter\"):%+v\n", t.Lookup("templ1.txt"))
@@ -1492,7 +1501,23 @@ Josie
 		fmt.Printf("===T_clone.Lookup(\"templ3.txt\"):%+v\n", T_clone_lookup.Root.String())
 	}
 
-	//同样我们也可以解析，略
+	//同样我们也可以解析，注意如果我们采用源本进行解析的话，那么模板就会绑定到源本上面去，副本的话，那么就会绑定到副本上面去
+	_, err = T_clone.Parse(`{{define "templ3.txt"}}这里是templ3.txt模板内容啊{{end}}`)
+	check_err_template(err)
+	T_clone_lookup = T_clone.Lookup("templ3.txt")
+	fmt.Printf("===T_clone.Lookup(\"templ3.txt\"):%+v\n", T_clone_lookup)
+	if T_clone_lookup != nil {
+		fmt.Printf("===T_clone.Lookup(\"templ3.txt\"):%+v\n", T_clone_lookup.Root.String())
+	}
+
+	//下面我们故意没有结束符{{end}}查看是否会抛出什么错误！
+	_, err = T_clone.Parse(`{{define "templ33.txt"}}这里是templ33.txt模板内容啊`)
+	check_err_template(err)
+	T_clone_lookup = T_clone.Lookup("templ33.txt")
+	fmt.Printf("===T_clone.Lookup(\"templ33.txt\"):%+v\n", T_clone_lookup)
+	if T_clone_lookup != nil {
+		fmt.Printf("===T_clone.Lookup(\"templ33.txt\"):%+v\n", T_clone_lookup.Root.String())
+	}
 
 	//输出：
 	//	-----下面我们继续讲解关于template对象下的方法和属性：----
@@ -1528,7 +1553,11 @@ Josie
 	//	{{end}}
 	//
 	//	===T_clone.Lookup("templ3.txt"):<nil>
-
+	//	===T_clone.Lookup("templ3.txt"):&{name:templ3.txt Tree:0xc00009c300 common:0xc00003e340 leftDelim: rightDelim:}
+	//	===T_clone.Lookup("templ3.txt"):这里是templ3.txt模板内容啊
+	//	template: letter:1: unexpected EOF
+	//	===T_clone.Lookup("templ33.txt"):<nil>
+	//从上面可以知道，克隆是完完整整的深度copy出来一个新的对象
 
 	fmt.Println("---下面讲解一个非常重要的知识点---")
 
@@ -1775,36 +1804,36 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//Output 75: {{slice []string{"a","b","c","d","e","f"} 1 2}}
 	//Output 76: {{slice []string{"a","b","c","d","e","f"} 1}}
 	//因为Output 39，41，42会抛出异常，所以我写在下面
-	//Output 39: {{call .callDividefunc2 5 0}}
-	//Output 41: {{call .callDividefunc3 16 4 0}}
-	//Output 42: {{call .callDividefunc3 16 0 4}}
-	//Output 43: {{call .callDividefunc4 16 4}}此函数会抛出异常function called with 3 args; should be 1 or 2
-	//Output 44: {{call .callDividefunc5 16 4}}此函数会抛出异常function called with 3 args; should be 1 or 2
-	//Output 40.7: {{call .callAddfunc1 16}}此函数会抛出异常error calling call: wrong number of args: got 1 want at least 2
-	//$和.可以同时存在，但是不能仅仅存在.和$这两个元素，而没有其他元素
-	//Output 53.7: {{print $.}}
-	//Output 53.8: {{print .$}}
+//Output 39: {{call .callDividefunc2 5 0}}
+//Output 41: {{call .callDividefunc3 16 4 0}}
+//Output 42: {{call .callDividefunc3 16 0 4}}
+//Output 43: {{call .callDividefunc4 16 4}}此函数会抛出异常function called with 3 args; should be 1 or 2
+//Output 44: {{call .callDividefunc5 16 4}}此函数会抛出异常function called with 3 args; should be 1 or 2
+//Output 40.7: {{call .callAddfunc1 16}}此函数会抛出异常error calling call: wrong number of args: got 1 want at least 2
+//$和.可以同时存在，但是不能仅仅存在.和$这两个元素，而没有其他元素
+//Output 53.7: {{print $.}}
+//Output 53.8: {{print .$}}
 
-	//下面均会产生报错，无法识别%和[]字符或者byte类型
-	//Output 67: {{with 3.14%%}}xx{{end}}
-	//Output 67: {{with byte(97)}}xx{{end}}
-	//Output 67: {{with []byte{'a','b'}}}xx{{end}}
+//下面均会产生报错，无法识别%和[]字符或者byte类型
+//Output 67: {{with 3.14%%}}xx{{end}}
+//Output 67: {{with byte(97)}}xx{{end}}
+//Output 67: {{with []byte{'a','b'}}}xx{{end}}
 
-	//range函数仅适用于map,slice和array,不适用于string
-	//Output 72: {{range $k, $v:= .multiStr}}索引为：{{$k}}，值为：{{$v}}{{end}}
+//range函数仅适用于map,slice和array,不适用于string
+//Output 72: {{range $k, $v:= .multiStr}}索引为：{{$k}}，值为：{{$v}}{{end}}
 
-	//从下面的2句可以看得出，无论有没有print函数，事实上并不是默认是print函数，而是我们下面有Execute(os.Stdout,m )
-	//Output 72: {{.slice1}}
-	//Output 73: {{print .slice1}}
+//从下面的2句可以看得出，无论有没有print函数，事实上并不是默认是print函数，而是我们下面有Execute(os.Stdout,m )
+//Output 72: {{.slice1}}
+//Output 73: {{print .slice1}}
 
-	//slice函数只能作用于slice类型，不能作用于interface{}类型（我们的m拿出来的值就是interface{}类型，所以我们需要对这个类型
-	// 进行类型断言成切片，数组或者字符串类型或者他们的拓展类型才可以，当然也可以Output 74或者Output 79那样），从下面的map[string]interface{}
-	// 中取出来的值都是interface{}类型的。总的来说就是要先接收这个interface{}类型，其实接收的同时会自动断言成相对应的类型的！所以我们没必要自己手动写一个函数
-	// 来进行断言并且调用！而且我们也没法实现，因为{{call func .slice1 | slice 1}},管道符的前一个命令得到结果 作为后一个子命令的最后一个参数来传递的，但是我们
-	// 必须作为slice的第一个参数才可以，所以这是go的不足之处。
-	// 下面的都会报错
-	//Output 77: {{slice .slice1 1}}
-	//Output 77.5: {{call slice1fun .slice1 | slice 1}}
+//slice函数只能作用于slice类型，不能作用于interface{}类型（我们的m拿出来的值就是interface{}类型，所以我们需要对这个类型
+// 进行类型断言成切片，数组或者字符串类型或者他们的拓展类型才可以，当然也可以Output 74或者Output 79那样），从下面的map[string]interface{}
+// 中取出来的值都是interface{}类型的。总的来说就是要先接收这个interface{}类型，其实接收的同时会自动断言成相对应的类型的！所以我们没必要自己手动写一个函数
+// 来进行断言并且调用！而且我们也没法实现，因为{{call func .slice1 | slice 1}},管道符的前一个命令得到结果 作为后一个子命令的最后一个参数来传递的，但是我们
+// 必须作为slice的第一个参数才可以，所以这是go的不足之处。
+// 下面的都会报错
+//Output 77: {{slice .slice1 1}}
+//Output 77.5: {{call slice1fun .slice1 | slice 1}}
 
 	//上面的.代表单个的m类型数据直接传递进去,{{.1}}中的.1代表的是浮点数0.1而不是map中的第一个索引值,
 	//{{index .ls 1}}千万不能写成{{.ls 1}}或者{{.ls.1}}的形式，不然均会报错！
@@ -2231,7 +2260,7 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//		}
 	//再深度的底层实现请看template.exec.evalField()方法(不在这里做分析，因为没什么意义)
 
-	//语句1
+//语句1
 	optionStr:=`
 亲爱的：{{.Name}}
 {{if .Attended}}
@@ -2241,16 +2270,16 @@ It is a shame you couldn't make it to the wedding.{{end}}
 {{end}}
 `
 
-	////语句2
-	////注意，下面跟上面的字符是有区别的额，多了一个{{.invalidKey}}，而这个东西是在填充词中没有的
-	//	optionStr:=`
-	//亲爱的：{{.Name}}
-	//{{if .Attended}}
-	//It was 这是我自定义的模板optionStr3333,{{.invalidKey}}a pleasure to see you at the wedding.{{else}}
-	//It is a shame you couldn't make it to the wedding.{{end}}
-	//{{with .Gift}}Thank you for the lovely {{.}}.
-	//{{end}}
-	//`
+////语句2
+////注意，下面跟上面的字符是有区别的额，多了一个{{.invalidKey}}，而这个东西是在填充词中没有的
+//	optionStr:=`
+//亲爱的：{{.Name}}
+//{{if .Attended}}
+//It was 这是我自定义的模板optionStr3333,{{.invalidKey}}a pleasure to see you at the wedding.{{else}}
+//It is a shame you couldn't make it to the wedding.{{end}}
+//{{with .Gift}}Thank you for the lovely {{.}}.
+//{{end}}
+//`
 	T_new := template.New("anko")
 	//T_new=T_new.Option("missingkey=default")//默认不设置的话也是这种情况
 	//T_new=T_new.Option("missingkey=invalid")//默认不设置的话也是这种情况
@@ -2375,8 +2404,8 @@ It is a shame you couldn't make it to the wedding.{{end}}^
 	// If the template does not already exist, it will create a new one.
 	// If the template does exist, it will be replaced.
 	// AddParseTree为具有给定名称的模板添加解析树，并将其与t关联。
-	//如果该模板尚不存在，它将创建一个新模板。
-	//如果模板确实存在，它将被替换。
+	//如果该模板尚不存在，它将创建一个新模板。注意了，他会新创建的tree的模板，所以我们必须需要接收返回值。以此来解析源模板上面的树节点和新添加的模板下面的树节点。
+	//如果模板确实存在，它将被替换并且返回新的模板。
 
 	const testTemplates = `{{define "one"}}one{{end}}{{define "two"}}two{{end}}`//define是定义一个模板，后面接模板名字
 	TestMessageForExecuteEmpty:=func () {
@@ -2384,49 +2413,284 @@ It is a shame you couldn't make it to the wedding.{{end}}^
 		//这个模板名字作为不存在的模板，我们准备往这个根模板中加进去东西，空模板下的子模板可以不为空，一样可以解析
 		tmpl := template.New("empty")
 		//var b bytes.Buffer//用来接收输出的模板字节信息
+		//没绑定任何模板直接运行会报错template: empty: "empty" is an incomplete or empty template
 		err := tmpl.Execute(os.Stdout, 0)
 		if err == nil {
 			fmt.Println("expected initial error")
 		}
+		//报错才会往下执行
 		got := err.Error()
 		want := `template: empty: "empty" is an incomplete or empty template`
 		if got != want {
 			fmt.Errorf("expected error %s got %s", want, got)
 		}
+
 		// Add a non-empty template to check that the error is helpful.
 		//添加非空模板以检查该错误是否有帮助。
-		tests, err := template.New("TT").Parse(testTemplates)
+		//注意这里的two必须是要解析的树节点的名字(树的名字会决定解析哪个字符串中定义模板)，同时他是返回的新模板的name,这2个必须同时相符才能解析出东西来
+		//也就是假设模板有one和two,这里只能指定名字one或者名字two,除此之外的任何字符串都不能正常解析出东西！
+		tests, err := template.New("one").Parse(testTemplates)
 		if err != nil {
 			log.Fatal(err)
 		}
-		T_AddParseTree, err := tmpl.AddParseTree("secondary", tests.Tree)
-		//这里默认是运行root模板（也就是刚开始创建的模板 的名字"empty",我们叫他根模板）
-		err = tmpl.Execute(os.Stdout, 0)
-		if err == nil {
-			fmt.Println("expected second error")
-		}
-		got = err.Error()
-		want = `template: empty: "empty" is an incomplete or empty template`
-		if got != want {
-			fmt.Errorf("expected error %s got %s", want, got)
-		}
-		// Make sure we can execute the secondary.
-		//确保我们可以执行辅助任务。
-		err = tmpl.ExecuteTemplate(os.Stdout, "secondary", 0)
-		if err != nil {
-			fmt.Println(err)
-		}
-		//fmt.Println("==",b.String())
+		fmt.Printf("%+v\n",tests.Tree)
+		//AddParseTree()第一个参数指定返回的新模板的name而不是解析后tree的名字,第二个参数是要返回的模板绑定的tree
+		//指定的是map[string]{*text/template.Template}下的key 和 value下的template的name，但是
+		//value下的template的tree.name和tree.parsename还是上面指定的one,而这个one指定了解析时候到底去解析什么名字的模板
 
-		err = T_AddParseTree.ExecuteTemplate(os.Stdout, "secondary", 0)
+		//T_AddParseTree, err := tmpl.AddParseTree("two", tests.Tree)
+		//T_AddParseTree, err := tmpl.AddParseTree("AddParseTree", tests.Tree)
+		//如果我们输入了跟tmpl.name相同的名字，则会将树添加到tmpl源本上面去！
+		T_AddParseTree, err := tmpl.AddParseTree("empty", tests.Tree)
+		//这里默认是运行root模板（也就是刚开始创建的模板 的名字"empty",我们叫他根模板）
+		//注意上面的AddParseTree并不是在源本上面进行绑定，而是新建一个新的模板树，所以这里的templ实际上什么都没绑定
+		//下面的这3行代码当且仅当tmpl.AddParseTree("empty", tests.Tree)时候才会有效果
+		//默认采用和new（）参数相同的模板来执行
+		err = tmpl.Execute(os.Stdout, 0)
+		check_err_template(err)
+		fmt.Println()
+
+
+		//ExecuteTemplate（）第一个参数是指定运行的模板的名字
+		//err = T_AddParseTree.ExecuteTemplate(os.Stdout, "AddParseTree", 0)
+		err = T_AddParseTree.ExecuteTemplate(os.Stdout, "empty", 0)
 		if err != nil {
 			fmt.Println(err)
 		}
 		//fmt.Println("==",b.String())
 	}
 	TestMessageForExecuteEmpty()
-	//不知道。先搁置
+	//输出：
+	//&{Name:one ParseName:one Root:one text:{{define "one"}}one{{end}}{{define "two"}}two{{end}} funcs:[] lex:<nil> token:[{typ:15 pos:24 val:}} line:1} {typ:0 pos:0 val: line:0} {typ:0 pos:0 val: line:0}] peekCount:0 vars:[] treeSet:map[]}
+	//one
+	//one
+
+
+	fmt.Println()
+	fmt.Println("-------------继续探讨template对象之AddParseTree()1111------------")
+
+	const (
+		cloneText1 = `{{define "a"}}{{template "b"}}{{template "c"}}{{end}}`
+		cloneText2 = `{{define "b"}}b{{end}}`
+		cloneText3 = `{{define "c"}}root{{end}}`
+		//cloneText3 = `{{define "c"}}{{and .Root .Root1}}{{end}}`//测试能够使用内置的函数
+		cloneText4 = `{{define "c"}}clone{{end}}`
+	)
+	TestAddParseTree:=func () {
+		//模板root绑定模板a,并且将它作为根模板，注意这里是创建了2个模板了，new一个模板root,parse又是一个模板a
+		//tree.name当前树节点的的名字，parsename是依附的最顶层根节点的名字！
+		root, err := template.New("root1").Parse(cloneText1)
+		check_err_template(err)
+
+		_, err = root.Parse(cloneText2)//绑定模板b
+		check_err_template(err)
+
+		//这里同样是2个模板，cloneText3模板下绑定了c模板，理论上我们应该给定最后一个参数的！但是我们这里省略定义函数了，代而取之的是nil,
+		//所以我们不能再c模板中含有内置的一些函数，比如and,or,等等，若果这样做了，会报错的！我这里就不展示了。
+		tree, err := parse.Parse("cloneText3", cloneText3, "", "", nil, nil)
+		check_err_template(err)
+		//这里将c模板添加到root模板下的子节点去，即使c模板的parsename还是指向之前的cloneText3模板的名字
+		added, err := root.AddParseTree("c", tree["c"])
+		check_err_template(err)
+
+		var b bytes.Buffer
+		//------------------------------测试能够使用内置的函数------------------------
+		//var m1=map[string]int{
+		//	"n0":0,
+		//	"n1":1,
+		//}
+		//
+		//err = added.ExecuteTemplate(&b, "a", m1)
+		//------------------------------测试能够使用内置的函数------------------------
+
+		//指定模板名字"a"的话，则在公共区域common（map类型）下查找到key="a"的value值假设是T（也是一个template对象），
+		// T.Tree.Nodes就会被解析出来,common存储着众多的解析过的模板！理论上可以添加无限个模板，只要你喜欢！
+		err = added.ExecuteTemplate(&b, "a", 0)
+		check_err_template(err)
+		fmt.Println("root.AddParseTree（）解析之后",b.String())
+		if b.String() != "broot" {
+			fmt.Printf("expected %q got %q", "broot", b.String())
+		}
+
+		b.Reset()
+		//不指定模板名字的话，则会解析调用者的模板名字，即c，而c.Tree下的Nodes就会被解析出来
+		err = added.Execute(&b,  0)
+		check_err_template(err)
+		fmt.Println("root.AddParseTree（）解析之后",b.String())
+
+	}
+	TestAddParseTree()
+	//输出：
+	//root.AddParseTree（）解析之后 broot
+	//root.AddParseTree（）解析之后 root
+
+	fmt.Println("-------------继续探讨template对象之AddParseTree()222------------")
+
+	//上面我们都是在一个模板上面添加另外一个模板，但是下面我们直接添加模板看下行不行，也就是在没任何模板的template
+	//对象上面进行继续添加模板，在这里你需要知道的是，假如没有任何模板的话，也就是没有任何的根节点来供新节点依附！
+	//这在过去是确实会导致出错，而如今的新版本的go不会报错了
+	TestAddParseTreeToUnparsedTemplate:=func () {
+		master := "{{define \"master\"}}master11{{end}}"
+		tmpl := template.New("master")
+		tree, err := parse.Parse("master", master, "", "", nil)
+		check_err_template(err)
+		masterTree := tree["master"]
+		T_AddParseTree, err := tmpl.AddParseTree("master", masterTree)// used to panic
+		check_err_template(err)
+		err = T_AddParseTree.Execute(os.Stdout, 0)
+		check_err_template(err)
+
+	}
+
+	TestAddParseTreeToUnparsedTemplate()
+	//输出：
+	//master11
+
+
+
+	fmt.Println()
+	fmt.Println("-------------继续探讨template对象之解析stylesheet------------")
+
+	TestIssue19294:=func () {
+		// The empty block in "xhtml" should be replaced during execution
+		// by the contents of "stylesheet", but if the internal map associating
+		// names with templates is built in the wrong order, the empty block
+		// looks non-empty and this doesn't happen.
+		var inlined = map[string]string{
+			"stylesheet": `{{define "stylesheet"}}stylesheet{{end}}`,
+			"xhtml":      `{{block "stylesheet" .}}{{end}}`,
+		}
+		all := []string{"stylesheet", "xhtml"}
+		for i := 0; i < 100; i++ {
+			res, err := template.New("title.xhtml").Parse(`{{template "xhtml" .}}`)
+			check_err_template(err)
+			for _, name := range all {
+				//new一个新的模板然后绑定到res下的公共区域common中去，返回的模板除了名字不同之外，
+				// 其他的东西完全相同，也就是，其实等价于：在源模板的common中加上新模板后，将源模板的name赋值给新模板！
+				//从这里看的出，这个其实就是新的模板了，但是同时影响了旧的模板，这种做法完全是为了省内存！唯一缺点是会影响到源模板。
+				_, err := res.New(name).Parse(inlined[name])
+				check_err_template(err)
+			}
+			var buf bytes.Buffer
+			err = res.Execute(&buf, 0)
+			check_err_template(err)
+			fmt.Println(buf.String())
+
+			if buf.String() != "stylesheet" {
+				fmt.Println("iteration %d: got %q; expected %q", i, buf.String(), "stylesheet")
+			}
+		}
+	}
+	TestIssue19294()
+	//暂时没明白这个由什么用！
+	//输出：
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+	//stylesheet
+
 }
+
+
+
+
+
 
 // templateFile defines the contents of a template to be stored in a file, for testing.
 // templateFile定义要存储在文件中以供测试的模板的内容。
@@ -2467,6 +2731,8 @@ func createTestDir(files []templateFile) string {
 	//4.返回临时目录的路径
 	return dir
 }
+
+
 
 func testTemplateParseGlobAndParseFiles() {
 	// Here we demonstrate loading a set of templates from a directory.
@@ -2542,7 +2808,7 @@ func testTemplateParseGlobAndParseFiles() {
 	//// ParseFiles创建一个新模板，并从命名文件中解析模板定义。 返回的模板名称将具有第一个文件的基本名称和已解析的内容。 必须至少有一个文件。
 	////如果发生错误，解析将停止，返回的* Template为nil。
 	////在不同目录中解析具有相同名称的多个文件时，最后提到的将是结果文件。
-	////例如，ParseFiles（“ a / foo”，“ b / foo”）将“ b / foo”存储为名为“ foo”的模板，而“ a / foo”不可用。
+	////例如，ParseFiles（"a/foo", "b/foo"）将"b/foo"存储为名为"foo"的模板，而"a/foo"不可用。
 	//
 	//tmpl := template.Must(template.ParseFiles(filenames...))
 	//-----------------------以上等价区--------------------------
@@ -2562,8 +2828,13 @@ func testTemplateParseGlobAndParseFiles() {
 	defer os.RemoveAll(dir)
 }
 
+
+
+
 func check_err_template(err error) {
 	if err != nil {
+		//fmt.Fprintln(os.Stderr,err)
+		//上面的这种方式会导致输出顺序不确定，虽然他可以输出红色的字体，但是由于顺序不确定，我们不采用他！
 		fmt.Println(err)
 	}
 }
