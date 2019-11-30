@@ -2234,7 +2234,7 @@ a comment（这是多行注释，不会被解析到模板中去）
 	// Option设置模板的选项。 选项由字符串（简单字符串或"key=value"）描述。 选项字符串中最多可以有一个等号。
 	// 如果选项字符串无法识别或无效，则Option()方法会抛出异常。
 	//已知选项：
-	// missingkey: 如果使用映射中不存在的键索引了映射，则在执行期间控制行为。
+	// missingkey: 如果使用映射中不存在的键索引了映射，则在执行期间控制行为。传递的数据必须是map才起作用，仅对map那一层起作用！
 	//	"missingkey=default" or "missingkey=invalid"
 	//		默认行为：不执行任何操作并继续执行。
 	//		如果打印，则索引操作的结果是字符串"<no value>".
@@ -2260,32 +2260,13 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//		}
 	//再深度的底层实现请看template.exec.evalField()方法(不在这里做分析，因为没什么意义)
 
-//语句1
-	optionStr:=`
-亲爱的：{{.Name}}
-{{if .Attended}}
-It was 这是我自定义的模板optionStr3333,a pleasure to see you at the wedding.{{else}}
-It is a shame you couldn't make it to the wedding.{{end}}
-{{with .Gift}}Thank you for the lovely {{.}}.
-{{end}}
-`
 
-////语句2
-////注意，下面跟上面的字符是有区别的额，多了一个{{.invalidKey}}，而这个东西是在填充词中没有的
-//	optionStr:=`
-//亲爱的：{{.Name}}
-//{{if .Attended}}
-//It was 这是我自定义的模板optionStr3333,{{.invalidKey}}a pleasure to see you at the wedding.{{else}}
-//It is a shame you couldn't make it to the wedding.{{end}}
-//{{with .Gift}}Thank you for the lovely {{.}}.
-//{{end}}
-//`
+
+	optionStr:="{{.Name}}这是我自定义的模板optionStr3333,{{.x1}}{{.y1}}{{.x1.Name}}{{.x1.Name1}}a pleasure to see you at the wedding.{{.word}}"
+
+
 	T_new := template.New("anko")
-	//T_new=T_new.Option("missingkey=default")//默认不设置的话也是这种情况
-	//T_new=T_new.Option("missingkey=invalid")//默认不设置的话也是这种情况
-	//T_new=T_new.Option("missingkey=zero")//默认不设置的话也是这种情况
-	//T_new=T_new.Option("missingkey=mapError")//只有这种情况看出来了效果，似乎上面的3种情况设置了跟没设置并没有什么不同，也许是我还没探究出来
-	//T_new=T_new.Option("missingkey=zero","missingkey=invalid")//还可以设置多个配置,但是后一个会把前一个的值给覆盖掉，不大明报为什么要这样写
+
 	T_option := template.Must(T_new.Parse(optionStr))
 	fmt.Println("与T_option关联的模板有：")
 	for key, value := range T_option.Templates() {
@@ -2295,41 +2276,89 @@ It is a shame you couldn't make it to the wedding.{{end}}
 	//只要在Execute（）方法执行之前设置Option都是可以的，而不必是未解析之前，比如下面：
 	//T_option=T_option.Option("missingkey=mapError")
 
+	data1 := map[string]Recipient{
+		"x1": Recipient{"名字1", "书籍", true},
+	}
 	exeFun:= func(t *template.Template) {
 		fmt.Println("----执行模板，准备输出填充后的完整模板----")
-		err = T_option.Execute(os.Stdout, Recipient{"anko","洋娃娃",true})//Recipient对象在上面被定义了，非常上面
+		// 总之不是所有的类型都是可以设置起效的，基本类型的话应该是起效的！
+		//T_new.Option("missingkey=default")//默认不设置的话也是这种情况
+		T_new.Option("missingkey=invalid")//默认不设置的话也是这种情况
+		//T_new.Option("missingkey=zero")//默认不设置的话也是这种情况
+		//T_new.Option("missingkey=mapError")//只有这种情况看出来了效果，似乎上面的3种情况设置了跟没设置并没有什么不同，也许是我还没探究出来
+		//T_new.Option("missingkey=zero","missingkey=invalid")//还可以设置多个配置,但是后一个会把前一个的值给覆盖掉，不大明报为什么要这样写
+
+		err = T_option.Execute(os.Stdout,data1 )//Recipient对象在上面被定义了，非常上面
 		check_err_template(err)
 	}
 	exeFun(T_option)
-	//语句1输出：
+	fmt.Println()
+	//输出：
+	//与T_option关联的模板有：
+	//key:value=0:&{anko 0xc0000e4800 0xc0000ad680  },模板字符串为：
+	//{{.Name}}这是我自定义的模板optionStr3333,{{.x1}}{{.y1}}{{.x1.Name}}{{.x1.Name1}}a pleasure to see you at the wedding.{{.word}}
 	//
-	//亲爱的：anko
-	//
-	//It was 这是我自定义的模板optionStr3333,template: letter:4:50: executing "letter"
-	//at <.invalidKey>: can't evaluate field invalidKey in type main.Recipient
-	//语句2输出：
-	//
-	//亲爱的：anko
-	//
-	//It was 这是我自定义的模板optionStr3333,template: letter:4:50: executing "letter"
-	//at <.invalidKey>: can't evaluate field invalidKey in type main.Recipient
+	//----执行模板，准备输出填充后的完整模板----
+	//<no value>这是我自定义的模板optionStr3333,{名字1 书籍 true}<no value>名字1template: anko:1:81: executing "anko" at <.x1.Name1>: can't evaluate field Name1 in type main.Recipient
+	//从上面可知，我们必须传递map时候作为execute（）方法的参数时候，missingkey的设置才会对map起效，但是
+	// 对于map中的进一步访问复杂类型的里面的信息时候是不会受missingkey的设置的影响的，它仅仅会影响map的那一层！而不会深入影响其他
+	//数据比如访问map中的结构体不存在的字段时候，具体请参考exec.go下的evalField（）方法，因为在这个方法中对结构体的字段进行了处理，同时出错的话会抛出异常！
 
-	//下面是设置了option为各个值时候的输出：
-	//"missingkey=default"，"missingkey=invalid"和"missingkey=zero"的输出:
-	//
-	//亲爱的：anko
-	//It was 这是我自定义的模板optionStr3333,template: letter:4:50: executing "letter"
-	//at <.invalidKey>: can't evaluate field invalidKey in type main.Recipient
-	//"missingkey=mapError"的输出:
-	//panic: unrecognized option: missingkey=mapError
-	//
-	//goroutine 1 [running]:
-	//text/template.(*Template).setOption(0xc00017a0c0, 0x567227, 0x13)
-	//	C:/Go/src/text/template/option.go:73 +0x24b
-	//text/template.(*Template).Option(0xc00017a0c0, 0xc00008d7e0, 0x1, 0x1, 0x0)
-	//	C:/Go/src/text/template/option.go:45 +0x7c
-	//main.main()
-	//	C:/Users/Administrator/Desktop/go_pro/src/io_pro/main3/compress_zlib.go:2110 +0x5ba4
+
+	fmt.Println("-------------继续探讨template对象之Option()设置选项1111---------------")
+	//在展示一个go中的例子
+
+	TestMissingMapKey :=func () {
+		data := map[string]int{
+			"x": 99,
+		}
+		tmpl, err := template.New("t1").Parse("{{.x}} {{.y}}")
+		check_err_template(err)
+		var b bytes.Buffer
+		// By default, just get "<no value>"
+		//默认情况下，只需获取“ <no value>”
+		err = tmpl.Execute(&b, data)
+		check_err_template(err)
+		fmt.Println(b.String())
+
+		// Same if we set the option explicitly to the default.
+		//如果我们将选项明确设置为默认值，则跟没设置时候相同。
+		tmpl.Option("missingkey=default")
+		b.Reset()
+		err = tmpl.Execute(&b, data)
+		check_err_template(err)
+		fmt.Println(b.String())
+
+		// Next we ask for a zero value
+		//接下来我们要求一个零值
+		tmpl.Option("missingkey=zero")
+		b.Reset()
+		err = tmpl.Execute(&b, data)
+		check_err_template(err)
+		fmt.Println(b.String())
+
+		// Now we ask for an error.
+		//现在，我们要求一个错误。
+		tmpl.Option("missingkey=error")
+		err = tmpl.Execute(&b, data)
+		check_err_template(err)
+		fmt.Println(b.String())
+		// same Option, but now a nil interface: ask for an error
+		//相同的Option，但现在是nil接口：询问错误
+		err = tmpl.Execute(&b, nil)
+		check_err_template(err)
+		fmt.Println(b.String())
+	}
+	TestMissingMapKey()
+	//输出：
+	//99 <no value>
+	//99 <no value>
+	//99 0
+	//template: t1:1:9: executing "t1" at <.y>: map has no entry for key "y"
+	//99 099
+	//template: t1:1:2: executing "t1" at <.x>: nil data; no entry for key "x"
+	//99 099
+
 
 
 	fmt.Println("-------------继续探讨template对象之Delims定界符---------------")
@@ -2551,14 +2580,85 @@ It is a shame you couldn't make it to the wedding.{{end}}^
 	fmt.Println()
 	fmt.Println("-------------继续探讨template对象之解析stylesheet------------")
 
+	//补充知识：
+
+	//However, to aid in formatting template source code, if an action's left delimiter
+	//(by default "{{") is followed immediately by a minus sign and ASCII space character
+	//("{{- "), all trailing white space is trimmed from the immediately preceding text.
+	//Similarly, if the right delimiter ("}}") is preceded by a space and minus sign
+	//(" -}}"), all leading white space is trimmed from the immediately following text.
+	//In these trim markers, the ASCII space must be present; "{{-3}}" parses as an
+	//action containing the number -3.
+	//但是，为帮助格式化模板源代码，如果操作的左定界符（默认情况下为"{{"）后紧跟一个减号和ASCII空格字符（"{{- "），则会从 紧接在前的文本。
+	//同样，如果右定界符（"}}"）前面有一个空格和减号（" -}}"），则所有紧随其后的空格都将紧随其后的文本修剪掉。
+	//在这些修饰标记中，必须存在ASCII空格； "{{-3}}"解析为包含数字-3的动作。
+
+	//For instance, when executing the template whose source is
+	//
+	//"{{23 -}} < {{- 45}}"
+	//
+	//the generated output would be
+	//
+	//"23<45"
+
+	//For this trimming, the definition of white space characters is the same as in Go:
+	//space, horizontal tab, carriage return, and newline.
+	//"{{23 -}} < {{- 45}}"等价于{{23}} < {{45}}，输出"23<45"
+	//对于这种修剪，空格字符的定义与Go中的相同：
+	//空格，水平制表符，回车符和换行符。
+
+	//	{{/* a comment */}}  //  */或者/*必须跟{{或者}}紧贴，不然会报错：unexpected "/" in command
+	//	{{- /* a comment with white space trimmed from preceding and following text */ -}}
+	//		A comment; discarded. May contain newlines.
+	//		Comments do not nest and must start and end at the
+	//		delimiters, as shown here.
+	//从文字前和文字后删去带有单个空白的注释，不能有多个！
+	//一条注释; 丢弃，不作为代码执行。 可能包含换行符。
+	//注释不嵌套，必须在定界符处开始和结束，如上所示。
+
+
+	//{{template "anko"}}
+	//The template with the specified name is executed with nil data.
+	//执行name="anko"的模板，并且该模板的无任何的填充词data内容
+	//
+	//{{template "anko" pipeline}}
+	//The template with the specified name is executed with dot set
+	//to the value of the pipeline.
+	//执行叫name="anko"的模板，并且该模板的填充词data内容=pipeline管道传递进来的内容（也就是execute的第二个参数的内容或者他的包含的子对象的内容）
+	//
+	//{{block "name" pipeline}} T1 {{end}}
+	//A block is shorthand for defining a template
+	//{{define "name"}} T1 {{end}}
+	//and then executing it in place
+	//{{template "name" pipeline}}
+	//The typical use is to define a set of root templates that are
+	//then customized by redefining the block templates within.
+	//一个块block是定义模板{{define "name"}} T1 {{end}}然后在原位{{template "name" pipeline}}执行的简写
+	//通常的用途是定义一组根模板，然后通过重新定义其中的块模板来对其进行自定义。
+	//
+	//
+	//{{with pipeline}} T1 {{end}}
+	//If the value of the pipeline is empty, no output is generated;
+	//otherwise, dot is set to the value of the pipeline and T1 is
+	//executed.
+	//如果管道的值为空，则不生成任何输出；
+	//否则，将dot设置为管道的值，并执行T1。
+	//
+	//{{with pipeline}} T1 {{else}} T0 {{end}}
+	//If the value of the pipeline is empty, dot is unaffected and T0
+	//is executed; otherwise, dot is set to the value of the pipeline
+	//and T1 is executed.
+	//如果管道的值为空，则点不受影响并执行T0； 否则，将dot设置为管道的值并执行T1。
+	//
+
 	TestIssue19294:=func () {
 		// The empty block in "xhtml" should be replaced during execution
 		// by the contents of "stylesheet", but if the internal map associating
 		// names with templates is built in the wrong order, the empty block
 		// looks non-empty and this doesn't happen.
-		var inlined = map[string]string{
-			"stylesheet": `{{define "stylesheet"}}stylesheet{{end}}`,
-			"xhtml":      `{{block "stylesheet" .}}{{end}}`,
+		var inlined = map[string]string{//下面千万不要写{{-3-}}，会报错unexpected bad number syntax: "-3-" in command，{{-3}}识别到-3，但是-3-无法识别类型
+			"stylesheet": `{{define "stylesheet"}}{{- 3 -}}{{-3}}{{- /*这里是前后有一个空格（只能有一个，不能有多个）的注释*/ -}}stylesheet{{.}}{{end}}`,
+			"xhtml":      `{{block "stylesheet" .}}{{end}}`,//block跟template应该差不多
 		}
 		all := []string{"stylesheet", "xhtml"}
 		for i := 0; i < 100; i++ {
@@ -2572,118 +2672,119 @@ It is a shame you couldn't make it to the wedding.{{end}}^
 				check_err_template(err)
 			}
 			var buf bytes.Buffer
-			err = res.Execute(&buf, 0)
+			//此时res下的模板绑定如下：
+			//"title.xhtml": `{{template "xhtml" .}}`	//这里是嵌套了模板"xhtml"，后面的.代表把传进来的参数传递到嵌套的模板中去，
+			// 											如果不传递的话，那么在子模板中{{.}}则会输出<no value>（当然你可以改为其他方式，这就要设置option属性了）
+			//"stylesheet": `{{define "stylesheet"}}stylesheet{{end}}`,//这里是定义一个新的模板。模板内容是stylesheet
+			//"xhtml":      `{{block "stylesheet" .}}{{end}}`,//这里的block跟template应该差不多
+			err = res.Execute(&buf, "-aaa")
 			check_err_template(err)
 			fmt.Println(buf.String())
-
-			if buf.String() != "stylesheet" {
-				fmt.Println("iteration %d: got %q; expected %q", i, buf.String(), "stylesheet")
-			}
 		}
 	}
 	TestIssue19294()
-	//暂时没明白这个由什么用！
+	//暂时没明白这个有什么用！
 	//输出：
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
-	//stylesheet
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
+	//3-3stylesheet-aaa
 
 }
 

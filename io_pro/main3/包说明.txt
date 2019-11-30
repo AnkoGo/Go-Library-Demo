@@ -1,0 +1,4 @@
+这个包是运行包，从main目录下的任一.go文件复制代码过来到这个包中的compress_zlib.go然后运行，是为了去除go运行中的一些限制同时不受其他文件影响！！
+compress_zlib.go中的代码为在main目录下的随意一个.go文件的代码，完全相同的！所以你不应该看这个compress_zlib.go的代码，而是应该到main目录下去看！
+并且需要运行时候复制到这个compress_zlib.go文件中去运行！我把compress_zlib.go当做运行文件！如果运行出错！则请尝试在main目录下运行你想要运行的
+单独的.go文件（因为有些早期的.go文件会依赖main目录！我后期会改正！）
