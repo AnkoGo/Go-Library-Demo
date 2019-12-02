@@ -11,6 +11,12 @@
 # 涵盖度：
 目前大部分库基本写了，除了net，syscall，context包外！目前不打算写runtime，debug包以及加密包！
 
+#  执行环境：
+
+go版本：1.13.x
+
+外置包：[go-sql-driver](github.com/go-sql-driver/mysql)
+
 # 下载和执行须知：  
 在这里需要特别指出的是，鉴于学识有限，此项目会存在以下问题：
 
