@@ -59,10 +59,10 @@ const (
 	NodeAction                     // A non-control action such as a field evaluation.
 	NodeBool                       // A boolean constant.//boolean类型节点
 	NodeChain// A sequence of field accesses.//链式调用字段类型节点（如.x.y，常用语map或者slice,array）
-    NodeCommand                    // An element of a pipeline.//整个命令行{{开头，}}结尾的节点
-    NodeDot                        // The cursor, dot.//{{.}}节点
-    nodeElse                       // An else action. Not added to tree.//{{else}}独立节点
-    nodeEnd                        // An end action. Not added to tree.//{{end}}独立节点
+	NodeCommand                    // An element of a pipeline.//整个命令行{{开头，}}结尾的节点
+	NodeDot                        // The cursor, dot.//{{.}}节点
+	nodeElse                       // An else action. Not added to tree.//{{else}}独立节点
+	nodeEnd                        // An end action. Not added to tree.//{{end}}独立节点
 	NodeField                      // A field or method name.//一个字段或者方法名称节点（相对于结构体）
 	NodeIdentifier// An identifier; always a function name.//一个内置或者自定义函数名称的节点
 	NodeIf                         // An if action.//if语句块节点
@@ -72,7 +72,7 @@ const (
 	NodePipe                       // A pipeline of commands.//pipeline管道符连接的节点
 	NodeRange                      // A range action.//range语句块保存的节点
 	NodeString                     // A string constant.//一个字符串常量节点
-    NodeTemplate// A template invocation action.//使用关键字template执行模板时候的节点
+	NodeTemplate// A template invocation action.//使用关键字template执行模板时候的节点
 	NodeVariable                   // A $ variable.//$声明变量后保存变量的类型节点
 	NodeWith                       // A with action.//with语句块类型节点
 )
