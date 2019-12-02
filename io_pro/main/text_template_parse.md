@@ -86,9 +86,10 @@ NodeAction>NodePipe>NodeCommand>{NodeIdentifier,NodeString,NodeField}
 
 
 
-- 相对于“Output 20: {{with $x := "output" | printf "%q"}}{{$x}}{{end}}”这条命令的话，请看：		> ![image-20191201192855541](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192855541.png)![image-20191201192742193](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192742193.png)
+- 相对于“Output 20: {{with $x := "output" | printf "%q"}}{{$x}}{{end}}”这条命令的话，请看： 	
+> ![image-20191201192855541](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192855541.png)![image-20191201192742193](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192742193.png)
 - 更多的信息其实你自己可以在debug窗口点开来查看的！方法已经说了！不再累叙！
-
+-  如果你在本地看不到上面的所有图片，大概是因为github拦截了，你可以通过逐张图片下载来查看，路径是完全正确的！
 下面我们对这个包中的所有的节点对象进行遍历一次：代码来自Node.go，加上我自己的理解和翻译:
 
 ```go
