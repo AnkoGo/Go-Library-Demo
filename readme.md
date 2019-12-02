@@ -157,7 +157,7 @@
 47. text/template：
 	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_01.go)**  
 48. text/template/parse：
-	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_parse.md)**  
+	-  **[text/template/parse](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_parse.md)**  
 49. time：
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_01.go)** 
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_02.go)** 
