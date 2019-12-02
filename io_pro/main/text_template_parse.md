@@ -11,25 +11,29 @@
 
 现在请跟我做一遍操作，打开goland编辑器，复制全部的main/text_template_01.go文件内容粘贴到main/compress_zlib.go文件中去，搜索“T_funcs.Parse(templateText)”字符并且在此下断点，右键debug模式执行，你会看到暂停在断点处，接着往下执行一步（快捷键F8），在debug窗口查找到“T_funcs_parsed”对象，单击点开选项，你会看到如下图所示：  
 
-![image-20191201182115354](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201182115354.png)
+> ![image-20191201182115354](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201182115354.png)
 
 - 点开common.0.value.Tree.Root.Nodes,
-- 继续点开Nodes.0.Text右侧的View，你会看到下图：![image-20191201182557772](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201182557772.png)
+- 继续点开Nodes.0.Text右侧的View，你会看到下图：
+> ![image-20191201182557772](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201182557772.png)
 
-这个input是什么呢？现在回到你的断点处代码，滚动轮轴往上翻，你会看到这个：![image-20191201182734459](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201182734459.png)
+这个input是什么呢？现在回到你的断点处代码，滚动轮轴往上翻，你会看到这个：
+> ![image-20191201182734459](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201182734459.png)
 
 input就是上面的字符串中的第一行“Input: {{printf "%q" .word}}”中的第一个文本字符串段“input”,那么 {{printf "%q" .word}}在哪里呢？请看下面！
 
-- 继续点开Nodes.1.Pipe.Cmds.0.Args,你会看到下图：![image-20191201183128167](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183128167.png)
-- 分别点开0,1,2，你会看到下图：
-![image-20191201183232729](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183232729.png)
+- 继续点开Nodes.1.Pipe.Cmds.0.Args,你会看到下图：
+> ![image-20191201183128167](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183128167.png)
+- 分别点开0,1,2，你会看到下图： 
+> ![image-20191201183232729](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183232729.png)
 
 现在到关键时刻了，这些东西和这个parse包有什么联系呢？
 
 由上图你应该注意什么？
-![image-20191201183452657](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183452657.png)
+> ![image-20191201183452657](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183452657.png)
 
-上图标红的地方都是这个包中的对象或者属性，我们在debug窗口中往上追溯：![image-20191201183918097](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183918097.png)![image-20191201183742563](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183742563.png)
+上图标红的地方都是这个包中的对象或者属性，我们在debug窗口中往上追溯：
+> ![image-20191201183918097](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183918097.png)![image-20191201183742563](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201183742563.png)
 
 由上2张图，我们可得到：
 
@@ -39,7 +43,8 @@ Template>Tree>ListNode>[]Node,然后每个Node对象都有以下的字段：
 	- Pos : 该Node的字符串（也就是Ident字段或者Text字段中的字符串）在整个解析过程中的整体字符串中的起始位置。
 	- tr : 所属树的指针
 	- Text : 该节点封装且符合该节点类型的文本字符串
-	- Ident : 该节点封装且符合该节点类型的文本字符串切片，跟Text差不多，但是接受多个关键字，这些关键字是运行模板方法execute()中指定的第二个参数对象包含的对象名称，比如在你的当前代码中搜索“m:=map[string]interface{}”，你会看到这个：![image-20191201185235815](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201185235815.png)
+	- Ident : 该节点封装且符合该节点类型的文本字符串切片，跟Text差不多，但是接受多个关键字，这些关键字是运行模板方法execute()中指定的第二个参数对象包含的对象名称，比如在你的当前代码中搜索“m:=map[string]interface{}”，你会看到这个：
+	> ![image-20191201185235815](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201185235815.png)
 
 而word这个字符串就在第一行，相信你已经注意到了更多的信息，Ident是属于NodeFiled类型的Node才会拥有，而Text是NodeString类型才会拥有，NodeString(16)类型和NodeFiled(8)类型后面的16和8是该类型对象对应的值，每一个Node的类别对象都是对应一个整形数字，如下：
 
@@ -81,7 +86,7 @@ NodeAction>NodePipe>NodeCommand>{NodeIdentifier,NodeString,NodeField}
 
 
 
-- 相对于“Output 20: {{with $x := "output" | printf "%q"}}{{$x}}{{end}}”这条命令的话，请看：		![image-20191201192855541](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192855541.png)![image-20191201192742193](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192742193.png)
+- 相对于“Output 20: {{with $x := "output" | printf "%q"}}{{$x}}{{end}}”这条命令的话，请看：		> ![image-20191201192855541](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192855541.png)![image-20191201192742193](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201192742193.png)
 - 更多的信息其实你自己可以在debug窗口点开来查看的！方法已经说了！不再累叙！
 
 下面我们对这个包中的所有的节点对象进行遍历一次：代码来自Node.go，加上我自己的理解和翻译:
