@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func main9900() {
+func main() {
 	fmt.Println("**************bytes********************")
 	fmt.Println("bytes库区别于strings库特有的函数如下：")
 

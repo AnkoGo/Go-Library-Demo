@@ -9,8 +9,9 @@ import (
 	"time"
 )
 
+func main(){
 
-	//创建一个缓冲区以将我们的压缩文件内容写入其中
+//创建一个缓冲区以将我们的压缩文件内容写入其中
 	buf := new(bytes.Buffer)
 	// NewWriter返回一个新的Writer，将一个zip文件写入buf。
 	w := zip.NewWriter(buf)
@@ -409,6 +410,7 @@ import (
 	//	.FileInfo().Sys()： &{aa.zip  false 768 0 0 0 2019-10-16 11:00:47.2557733 +0000 UTC 22551 20304 0 0 1582 0 1582 [] 2180382720}
 	//	2019-10-16 19:00:46 +0800 CST
 	//	2020-11-17 23:08:50 +0800 CST
+
 }
 
 func check_err_zip(err2 error) {

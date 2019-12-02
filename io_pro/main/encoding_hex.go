@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main445577() {
+func main() {
 	// Package hex实现十六进制编码和解码。
 
 	fmt.Println("-------------hex.Encode()和hex.EncodeToString()编码数据-----------------")

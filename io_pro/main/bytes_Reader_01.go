@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 )
-func main24342() {
+func main() {
 	byte_slice:=[]byte{99,98,99,99,101,102,103,107}
 	//byte_slice:=[]byte{00,24,00,35,00,56,00,34}
 	//byte_slice:=[]byte{99,98,99,99,100,100,100,107}

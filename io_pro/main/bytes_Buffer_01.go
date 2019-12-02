@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func main4444() {
+func main() {
 	byte_slice := []byte{97, 98, 99, 100, 101, 102, 126, 127}
 	Bf:=bytes.NewBuffer(byte_slice)
 	fmt.Println(Bf)//会在控制台打印出字面值，最大126可显示出字面值，超过的就会显示乱码了

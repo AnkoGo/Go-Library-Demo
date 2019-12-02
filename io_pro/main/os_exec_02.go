@@ -11,7 +11,7 @@ import (
 	"unicode/utf8"
 )
 
-func main24790() {
+func main() {
 	r := "世"
 	fmt.Println(bytes.NewBufferString(r).Bytes())
 

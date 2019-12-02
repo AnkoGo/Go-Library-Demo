@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func main34769923() {
+func main() {
 
 	//该包下的对象：
 	//// Regexp是已编译正则表达式的表示。

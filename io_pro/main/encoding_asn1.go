@@ -15,7 +15,7 @@ type myPerson struct {
 	Isfat   bool//这里所有的字段首字母都必须大写
 }
 
-func main3446() {
+func main() {
 	fmt.Println("-----------Marshal函数---------------")
 	//Marshal函数返回val的ASN.1编码。
 	//除了Unmarshal可以识别的struct标记外,此外还提供了供Unmarshal函数识别的结构体标签，可用如下标签：

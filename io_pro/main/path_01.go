@@ -5,7 +5,7 @@ import (
 	"path"
 )
 
-func main111() {
+func main() {
 
 	//path实现了对斜杠分隔的路径的实用操作函数。
 

@@ -12,7 +12,7 @@ import (
 	"strconv"
 )
 
-func main2368912() {
+func main() {
 
 	fmt.Println("-------------reflect.Type对象-----------------")
 

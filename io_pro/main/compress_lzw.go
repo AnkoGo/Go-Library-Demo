@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func main372() {
+func main() {
 	//对于这种算法建议阅读https://baike.baidu.com/reference/7293853/524dhTCm7Hnt8jSdM7ycM4Gd81AvPcI0GG_T94Jzzkd1qM_Mm05Z_I7EhSedUJYIspbGWi1segdqT65xzSUHAUvns38us4pu2XGFFw
 	//或者https://segmentfault.com/a/1190000011425787?utm_source=tag-newest
 	//这种算法多用于重复性比较大的数据，如压缩GIF文件、图象、文本文件是最理想的，对于像我下面的读取少字的pdf反而因压缩会变大！

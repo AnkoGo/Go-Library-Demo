@@ -10,7 +10,7 @@ import (
 
 
 
-func main43434() {
+func main() {
 
 	fmt.Println("-------------------")
 	cmd := exec.Command(`ping`,"www.baidu.com" )

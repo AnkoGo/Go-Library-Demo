@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-func main321() {
+func main() {
 	fmt.Println("**********************************")
 	//函数报告r是否在rangeTable指定的字符范围内。
 	fmt.Println(unicode.Is(unicode.Han,'中')) // true

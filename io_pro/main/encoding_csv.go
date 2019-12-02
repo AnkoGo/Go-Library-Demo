@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main446677() {
+func main() {
 	fmt.Println("-----------------如何写csv之Write()------------------------")
 	buffer_csv := new(bytes.Buffer)
 	writer := csv.NewWriter(buffer_csv)

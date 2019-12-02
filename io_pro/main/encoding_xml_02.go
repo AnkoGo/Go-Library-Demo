@@ -7,7 +7,7 @@ import (
 )
 var t, token xml.Token//申明Token，像这样2个一起申明，即使其中一个不使用也是可以的！
 var err error
-func main23567() {
+func main() {
 	input := "<Person><FirstName>Laura</FirstName><LastName>Lynn</LastName></Person>"
 	inputReader := strings.NewReader(input)
 	p := xml.NewDecoder(inputReader)//创建解析input字符串的解码器

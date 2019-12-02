@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func main344347() {
+func main() {
 	//编码unicode成为GB18030码
 	enc := simplifiedchinese.GB18030.NewEncoder()//申明一个编码器（相对于unicode来说确实是编码）
 	encBuf := bytes.NewBuffer(make([]byte, 0))//申明一个encBuf来存储转换后的原生字节

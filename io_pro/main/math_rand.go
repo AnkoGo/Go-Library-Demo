@@ -8,7 +8,7 @@ import (
 	"text/tabwriter"
 )
 
-func main34783499009() {
+func main() {
 	//包rand实现伪随机数生成器。
 	//随机数由源生成。 顶级函数（例如Float64和Int）使用默认的共享源，该源在每次运行程序时都会产生确定的值序列。 如果每次运行需要不同的行为，请使用种子函数初始化默认的源。
 	//默认Source可安全地供多个goroutine并发使用，但不是由NewSource创建的Source。

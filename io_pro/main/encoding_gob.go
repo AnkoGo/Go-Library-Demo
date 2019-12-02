@@ -9,7 +9,7 @@ import (
 	"unicode/utf8"
 )
 
-func main2367() {
+func main() {
 
 	fmt.Println("------------------Encode()编码数据---------------------")
 	bf_ls := make([]byte, 0, 20)     //记得作为要写入的缓存我们只需要给一定大小的cap和给0 len

@@ -47,7 +47,7 @@ var (
 
 
 
-func main345792() {
+func main() {
 	fmt.Println("os.Args[0]:", os.Args[0])
 
 	fmt.Println("-------------")

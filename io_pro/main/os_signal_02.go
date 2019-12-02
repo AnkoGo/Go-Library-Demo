@@ -8,7 +8,7 @@ import (
 	"syscall"
 )
 
-func main90124() {
+func main() {
 	fmt.Println("111111111")
 	//c := make(chan os.Signal, 3)
 	//signal.Notify(c, os.Interrupt)

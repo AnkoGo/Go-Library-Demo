@@ -152,7 +152,7 @@ func WriteTar() {
 
 }
 
-func main45762() {
+func main() {
 
 	fmt.Println("---------------------将文件进行压缩并且写入压缩文件------------------------")
 	WriteTar()

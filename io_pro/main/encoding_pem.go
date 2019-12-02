@@ -106,7 +106,7 @@ func ExampleEncode() {
 	//	-----END MESSAGE-----
 }
 
-func main367() {
+func main() {
 	ExampleEncode()
 	fmt.Println("--------------------------------")
 	ExampleDecode()

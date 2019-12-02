@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func main2352() {
+func main() {
 	//file, e := os.Open("main/bzip2/e.txt.bz2")
 	file, e := os.Open("main/bzip2/aa.txt.bz2")
 	check_err_bzip2(e)

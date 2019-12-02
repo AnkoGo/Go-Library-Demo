@@ -14,7 +14,7 @@ func (w MynopCloser) Close() error {
 	return nil
 }
 
-func main8606() {
+func main() {
 	// Compressor返回一个新的压缩编写器，写入w。
 	//必须使用WriteCloser的Close方法将待处理数据刷新到w。
 	// Compressor本身必须可以安全地同时从多个goroutine调用，但是每个返回的writer一次只能由一个goroutine使用。

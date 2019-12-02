@@ -290,7 +290,7 @@ func ExampleValue() {
 
 
 
-func main345678() {
+func main() {
 
 	fmt.Println("------------flag.String--------------")
 	//字符串定义具有指定名称，默认值和用法字符串的字符串标志。

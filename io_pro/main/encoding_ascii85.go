@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main56780() {
+func main() {
 
 	fmt.Println("------------编码---------------")
 	dst_ls:=make([]byte,15)

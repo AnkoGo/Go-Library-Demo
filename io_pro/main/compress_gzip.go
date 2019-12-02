@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func main2346854() {
+func main() {
 
 	fmt.Println("---------------gzip压缩---------------------")
 	dst_file, e := os.Create("main/gzip/dst.gz")

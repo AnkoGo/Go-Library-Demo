@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func main3452() {
+func main() {
 	fmt.Println("----------求绝对值-----------")
 
 	fmt.Println(math.Abs(1.1))

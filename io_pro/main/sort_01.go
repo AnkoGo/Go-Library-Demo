@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func main5647() {
+func main() {
 	//整个sort包的排序都是采用的堆排序,sort.go里面的siftDown()函数就是具体的实现
 
 	fmt.Println("============================================")

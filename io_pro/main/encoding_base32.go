@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func main4464() {
+func main() {
 
 	fmt.Println("--------------------编码-------------------")
 	//双向的编码/解码协议，根据一个32字符的字符集定义，RFC 4648标准化了两种字符集。默认字符集用于SASI和GSSAPI，另一种用于DNSSEC。

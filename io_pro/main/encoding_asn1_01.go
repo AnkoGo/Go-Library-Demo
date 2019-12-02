@@ -11,7 +11,7 @@ import (
 )
 
 //服务端：等待客户端连接并且连接后发送服务器的时间
-func main23675() {
+func main() {
 
 	service := ":1200"
 	tcpAddr, err := net.ResolveTCPAddr("tcp", service)

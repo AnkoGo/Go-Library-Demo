@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func main3463() {
+func main() {
 
 	fmt.Println("-----压缩文件并且读取压缩后的数据------")
 	dst_file, e := os.Create("main/zlib/zlib01_compress.txt")

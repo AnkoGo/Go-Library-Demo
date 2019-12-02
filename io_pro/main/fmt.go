@@ -785,7 +785,7 @@ func Example_formats() {
 	//	61 e2 8c 98
 	//	1973-11-29 21:33:09 +0000 UTC "1973-11-29 21:33:09 +0000 UTC"
 }
-func main346720()  {
+func main()  {
 	//ExampleErrorf()
 	//ExampleFscanf()
 	//ExampleFscanln()

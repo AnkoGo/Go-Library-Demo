@@ -15,7 +15,7 @@ type person struct {
 	Isstudent bool
 }
 
-func main0975() {
+func main() {
 
 	fmt.Println("-------------NewEncoder()创建编码器，.Encode编码数据成为json对象-------------------------")
 

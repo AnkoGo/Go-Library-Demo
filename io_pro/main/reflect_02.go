@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-func main237932() {
+func main() {
 
 	fmt.Println("-------------reflect包中的零碎函数或者对象方法-----------------")
 	// Append appends the values x to a slice s and returns the resulting slice.(追加value x到和切片s元素类型相同的切片s中去然后返回新的切片的value封装对象)

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func main0989() {
+func main() {
 	file, err := os.Open("main/test.txt") // For read access.
 	if err != nil {
 		log.Fatal(err)

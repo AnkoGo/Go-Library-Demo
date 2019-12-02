@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func main1689() {
+func main() {
 	// r := strings.NewReader("Hello, Reader!")
 
 	bytes, e := ioutil.ReadFile(`main\test.txt`) //读取整个文件，第一个参数跟打开的主文件目录有关，感觉很奇怪

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func main2468() {
+func main() {
 	fmt.Println("===================================")
 	//Scanner类型提供了方便的读取数据的接口，如从换行符分隔的文本里读取每一行。
 	//

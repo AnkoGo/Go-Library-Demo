@@ -5,7 +5,7 @@ import (
 	"unicode/utf8"
 )
 
-func main4579904() {
+func main() {
 	fmt.Println("**********************************")
 
 	//有效报告p是否完全由有效的UTF-8编码的符文组成。

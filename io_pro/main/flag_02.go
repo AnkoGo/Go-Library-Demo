@@ -15,7 +15,7 @@ func init() {
 	flag.IntVar(&bnFlag, "bn", 12, "份数")
 }
 
-func main347889() {
+func main() {
 
 	flag.Parse()
 	// Args保留以程序名称开头的命令行参数。按照空格进行分割参数

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func main3472() {
+func main() {
 	fmt.Println("-----下面的代码都是为了验证是否可以压缩多个文件------")
 	dst_file, err := os.Create("main/gzip/dst2.gz")
 	check_err_gzip2(err)

@@ -5,7 +5,7 @@ import (
 	"os/user"
 )
 
-func main236785() {
+func main() {
 	user111,err:=user.Current()
 	if err != nil{
 		fmt.Println(err)

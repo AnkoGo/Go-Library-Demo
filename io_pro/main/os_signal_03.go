@@ -22,7 +22,7 @@ func consumer(stop <-chan bool) {
 		}
 	}
 }
-func main267548() {
+func main() {
 	stop := make(chan bool)
 	var wg sync.WaitGroup
 	//开启三个协程

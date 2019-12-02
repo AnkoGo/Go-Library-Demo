@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func main19076() {
+func main() {
 	mapping := func(key string) string {
 		m := make(map[string]string)
 		m = map[string]string{

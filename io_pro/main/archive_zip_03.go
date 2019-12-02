@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func main235() {
+func main() {
 	//Reader结构体说明
 	//type Reader struct {
 	//	r             io.ReaderAt //表示从哪里开始读

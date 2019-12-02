@@ -5,7 +5,7 @@ import (
 	"reflect"
 )
 
-func main457882() {
+func main() {
 
 	type ppp struct {
 		name string

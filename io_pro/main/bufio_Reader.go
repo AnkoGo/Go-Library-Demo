@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func main32467783() {
+func main() {
 	//提前体验下自定义错误
 	err := errors.New("这是我自定义的一个错误")
 	fmt.Println("你好啊", err)

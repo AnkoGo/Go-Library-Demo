@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func main6738() {
+func main() {
 	fmt.Println("---------------------tar写入缓存------------------------")
 	buf, e_tar := os.OpenFile("main/aa.txt", os.O_RDWR, 777)
 	check_EncDec_err(e_tar)

@@ -86,7 +86,7 @@ func Example_interface() {
 }
 
 
-func main135234() {
+func main() {
 	fmt.Println("-------------------gob.Register()和gob.RegisterName()编解码数据----------------------")
 	Example_interface()
 

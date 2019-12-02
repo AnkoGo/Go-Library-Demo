@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func main34408773() {
+func main() {
 	fmt.Println("----------big.Int()-----------")
 
 	// NewInt分配并返回一个新的Int设置为x。返回的是指针

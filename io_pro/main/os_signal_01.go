@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func main15644() {
+func main() {
 	attr := &os.ProcAttr{
 		Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}, //其他变量如果不清楚可以不设定
 	}

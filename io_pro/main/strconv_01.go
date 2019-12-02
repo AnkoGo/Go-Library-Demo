@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 )
 
-func main11122() {
+func main() {
 	fmt.Println("你好啊", strconv.ErrRange) //sdsdsd
 	//a := make([]byte, 10)
 	//fmt.Println(strconv.AppendInt(a,1,10))

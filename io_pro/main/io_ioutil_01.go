@@ -36,7 +36,7 @@ func(r *myReader) resetIndex()  {
 	ioutil.ReadAll(r)
 }
 
-func main345454() {
+func main() {
 	mR:=newmyReader("abcdef124")
 	ls:=make([]byte,13)
 	n,err111:=mR.Read(ls)

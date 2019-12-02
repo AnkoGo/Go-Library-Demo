@@ -2,13 +2,13 @@ encoding包定义了供其它包使用的可以将数据在字节水平和文本
 
 主要有下面的结果方法：
 
-[type BinaryMarshaler](https://studygolang.com/static/pkgdoc/pkg/encoding.htm#BinaryMarshaler)
+[type BinaryMarshaler]
 
-[type BinaryUnmarshaler](https://studygolang.com/static/pkgdoc/pkg/encoding.htm#BinaryUnmarshaler)
+[type BinaryUnmarshaler]
 
-[type TextMarshaler](https://studygolang.com/static/pkgdoc/pkg/encoding.htm#TextMarshaler)
+[type TextMarshaler]
 
-[type TextUnmarshaler](https://studygolang.com/static/pkgdoc/pkg/encoding.htm#TextUnmarshaler)
+[type TextUnmarshaler]
 
 ####  这个包一般不被用到，他会被其他包继承！所以不写！事实上在其他encoding包中已经被写到了，请去了解其他包中的实现类！
 

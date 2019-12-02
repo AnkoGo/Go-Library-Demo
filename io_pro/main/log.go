@@ -12,7 +12,7 @@ import (
 // Panic函数在写入日志消息后调用panic。
 
 
-func main34793() {
+func main() {
 	fmt.Println("-----------log包下的函数--------------")
 	//Fatal(致命)等同于Print（），然后调用os.Exit（1）。
 	//log.Fatal("log.Fatal。。。")

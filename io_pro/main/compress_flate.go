@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func main23657() {
+func main() {
 
 
 	dst_file, e := os.Create("main/flate/flate_dst.txt")

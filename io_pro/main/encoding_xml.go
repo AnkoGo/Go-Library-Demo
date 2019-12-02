@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main34674() {
+func main() {
 	fmt.Println("-----------------xml编码-----------------------")
 
 	type Address struct {

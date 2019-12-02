@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 	)
-func main3267788() {
+func main() {
 	byte_slice:=[]byte{0,1,2,3,4,5,6}
 
 	var R =io.SectionReader{}

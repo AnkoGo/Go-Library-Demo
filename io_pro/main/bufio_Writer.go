@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func main1357() {
+func main() {
 	// Writer为io.Writer对象实现缓冲。
 	//如果在写入Writer时发生错误，将不再接受更多数据，并且所有后续写入和Flush都将返回错误。
 	//写入所有数据后，客户端应调用Flush方法以确保所有数据均已转发到基础io.Writer。

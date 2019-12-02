@@ -11,7 +11,7 @@ import (
 
 
 
-func main34534() {
+func main() {
 
 	//// ErrorList is a list of *Errors.
 	//// The zero value for an ErrorList is an empty ErrorList ready to use.

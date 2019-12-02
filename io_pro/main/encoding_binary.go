@@ -20,7 +20,7 @@ import (
 
 
 
-func main235342() {
+func main() {
 	// 接口ByteOrder指定如何将字节序列转换为16位，32位或64位无符号整数。
 	//binary.ByteOrder()
 

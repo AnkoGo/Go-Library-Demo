@@ -19,7 +19,7 @@ func ConvertToByte(src string, srcCode string, targetCode string) []byte {
 	return cdata
 }
 
-func main667778() {
+func main() {
 	for key, value := range os.Environ() {
 		fmt.Println(key, ":",value)
 	}
