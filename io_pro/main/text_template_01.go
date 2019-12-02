@@ -1687,11 +1687,17 @@ Josie
 		//名称“ title”是在模板文本中将调用的函数。
 		"title": strings.Title,//这个函数是go库中内置的
 		"and1": and,//这个是我们参考内置的FuncMap 的and函数来写的，功能完全一样
+
 	}
+
 
 	tt := template.New("templ_func")
 
-	//必须在parse之前进行绑定自定义的函数，否则无效
+	//必须在parse之前进行绑定自定义的函数，否则无效，在这里对parse(解析)做个说明，你看下面的代码，
+	//是不是有很多的命令，这些命令都会被解析成各种类型的树节点对象来保存，然后execute()运行时候就可以准确的将
+	//树节点需要填充的地方全部索引到并且进行填充，填充好后，execute()方法还会从树节点中转换成一坨字符串然后赋值到
+	//execute()方法指定的第一个参数实参对象上面去！但是parse()方法仅仅做了对字符串到树节点的转换，而execute()方法则
+	//做了树节点信息替换（词汇替换填充）和替换后进行转换树节点成为字符串保存到某个对象上面去！
 	T_funcs := tt.Funcs(funcMap1)
 
 	const templateText = `
@@ -1790,17 +1796,64 @@ Output 76: {{$sli := .slice1}}{{$sli}}
 Output 77: {{$sli := .slice1}}{{.}}
 Output 78: {{$sli := .slice1}}{{$}}
 Output 79: {{$sli := .slice1}}{{slice $sli 1 2 3}}
-{{/* a comment（这是单行注释，不会被解析到模板中去） */}}
+Output 80: {{.}}
+Output 81: {{.p1}}
+Output 82: {{.p1.Name }} {{.p1.Age}} {{.p1.Isstu}} {{.p1.Worth}}
+Output 83: {{.p2}}
+Output 84: {{.p2.Name }} {{.p2.Age}} {{.p2.Isstu}} {{.p2.Worth}}
+Output 85: {{print (.p2.Name) (.p2.Age) (.p2.Isstu) (.p2.Worth)}}
+Output 86: {{print .p2.Name .p2.Age .p2.Isstu .p2.Worth}}
+{{/* 下面的点已经是属于.p2对象 了，所以直接.GetAge即可调用对象上面的方法了 */}}
+Output 87: {{with .p2}}{{.GetAge}}{{end}}
+
+
+Output 90: {{.p2.GetAge}}
+Output 91: {{.mynil}}
+Output 92: {{.nilInterface}}
+Output 93: {{.nilInterface1}}
+Output 94: {{with $sli1 := .nil}}{{ $sli1 }}{{end}}
+{{/* 上面的91到94都是我想输出nilNode节点，但是一直无法输出这种类型的节点，好奇怪*/}}
+Output 95: {{$sli1 := .slice2}}{{$sli1}}
+
+{{/* a comment（这是单行注释，不会被解析到模板中去*/}}
+{{- /* a comment（这是单行注释，不会被解析到模板中去） */ -}}
+
 {{/* 
 a comment（这是多行注释，不会被解析到模板中去） 
 a comment（这是多行注释，不会被解析到模板中去）
 a comment（这是多行注释，不会被解析到模板中去）
 a comment（这是多行注释，不会被解析到模板中去）
 */}}
-
+{{- /* 
+a comment（这是多行注释，不会被解析到模板中去） 
+a comment（这是多行注释，不会被解析到模板中去）
+a comment（这是多行注释，不会被解析到模板中去）
+a comment（这是多行注释，不会被解析到模板中去）
+*/ -}}
 
 `
+	//{{}}中不可以什么参数都没有
+	//Output 93: {{}}
+	//因为OutName方法返回0个值，所以这里不能输出，所以报错，Output 91同理：
+	// execution: template: templ_func:105:25: executing "templ_func" at <.OutName>: can't call method/function "OutName" with 0 results	//Output 88: {{with .p2}}{{.OutName}}{{end}}
+	//Output 88: {{with .p2}}{{.OutName}}{{end}}
+	//Output 91: {{.p2.SetWorth 3333.33}}
+	//下面2条均会报错，我们不能指望传递方法，然后在模板中执行，我们必须在模板中传递执行方法的对象，然后指定执行的方法然后他自动会执行的
+	//Output 89: {{with .p2_m}}{{.}}{{end}}
+	//Output 89.5: { .p2_m}}
 
+//{{/* a comment（这是单行注释，不会被解析到模板中去,"{{/*" 或者"*/}}"字符之间不能有空格或者加上“-”号则"{{/*" 或者"*/}}"字符之间只能有单个空格,下同） */}}
+//但是如果我想要在注释中输出{{或者}}的话，则不知道怎么输出，可能是我上面用到了``的形式进行不转义，所以我无法在注释中输出{{或者}},如果采用""的转义形式的话，
+//那么应该在/{{或者/}}应该可以在注释中输出这几个符号，请自己尝试！
+//下面这种注释是错误的，/*和{{ 或者 */和\}}必须同行：
+//	{{-
+//	/*
+//	a comment（这是多行注释，不会被解析到模板中去,{{/* 或者*/}}字符之间不能有空格）
+//	a comment（这是多行注释，不会被解析到模板中去,{{/* 或者*/}}字符之间不能有空格）
+//	a comment（这是多行注释，不会被解析到模板中去,{{/* 或者*/}}字符之间不能有空格）
+//	a comment（这是多行注释，不会被解析到模板中去,{{/* 或者*/}}字符之间不能有空格）
+//	*/
+//	-}}
 	//Output 75: {{slice []string{"a","b","c","d","e","f"} 1 2}}
 	//Output 76: {{slice []string{"a","b","c","d","e","f"} 1}}
 	//因为Output 39，41，42会抛出异常，所以我写在下面
@@ -1883,6 +1936,7 @@ a comment（这是多行注释，不会被解析到模板中去）
 
 	type myslice []byte
 
+
 	//事实上我们的map[string]interface{}的值不一定要设置interface{}类型，可以是任意类型，因为下面的Execute()
 	//的第二个参数是任意类型
 	m:=map[string]interface{}{"word":"the go programming language",
@@ -1949,11 +2003,32 @@ a comment（这是多行注释，不会被解析到模板中去）
 		// Slice3是slice操作的3索引形式：它返回v [i：j：k]。
 		//如果v的Kind不是Array或Slice，或者v是不可寻址的数组，或者索引超出范围，它就会发生混乱。
 		"slice1":[]string{"a","b","c","d","e","f"},
+		"slice2":[]interface{}{"a",1,true,3.5,complex(2,3),nil,(io.Reader)(nil),},
 		"slice1fun": func(sli_in interface{})[]string {
 			//我们就不检查异常了
 			slice := sli_in.([]string)
 			return slice
 		},
+		"p1":person{
+			Name:  "anko1",
+			Age:   24,
+			Isstu: false,
+			Worth: 300093.58,
+		},
+		"p2":&person{
+			Name:  "anko2",
+			Age:   14,
+			Isstu: true,
+			Worth: 3030.58,
+		},
+		"p2_m":(&person{//此对象用于展示错误用法
+			Name:  "anko2",
+			Age:   14,
+			Isstu: true,
+			Worth: 3030.58,
+		}).GetAge,
+		"mynil":nil,
+		"nilInterface":io.Reader(nil),
 
 	}
 	// Run the template to verify the output.
@@ -1963,17 +2038,17 @@ a comment（这是多行注释，不会被解析到模板中去）
 		log.Fatalf("execution: %s", err)
 	}
 
-
 	//输出：
-	//	dir: main3\template896667435
-	//	pattern: main3\template896667435\*.tmpl
+	//	dir: main3\template757659447
+	//	pattern: main3\template757659447\*.tmpl
 	//	T0 invokes T1: (T1 invokes T2: (This is T2))
 	//	-----下面我们继续讲解关于template对象下的方法和属性：----
-	//	===t.Lookup("letter"):&{name:letter Tree:0xc00009e000 common:0xc00003e100 leftDelim: rightDelim:}
-	//	===t.Lookup("letter"):&{name:templ1.txt Tree:0xc0000e8800 common:0xc00003e100 leftDelim: rightDelim:}
-	//	===t.Lookup("letter"):&{name:templ2.txt Tree:0xc0000e8900 common:0xc00003e100 leftDelim: rightDelim:}
+	//	--------------
+	//	===t.Lookup("letter"):&{name:letter Tree:0xc0000b6000 common:0xc0000460c0 leftDelim: rightDelim:}
+	//	===t.Lookup("letter"):&{name:templ1.txt Tree:0xc0000b6700 common:0xc0000460c0 leftDelim: rightDelim:}
+	//	===t.Lookup("letter"):&{name:templ2.txt Tree:0xc0000b6800 common:0xc0000460c0 leftDelim: rightDelim:}
 	//
-	//	===T_clone.Lookup("letter"):&{name:letter Tree:0xc00009e000 common:0xc00003e3c0 leftDelim: rightDelim:}
+	//	===T_clone.Lookup("letter"):&{name:letter Tree:0xc0000b6000 common:0xc0000c8a80 leftDelim: rightDelim:}
 	//	===T_clone.Lookup("letter"):
 	//	Dear {{.Name}},
 	//	{{if .Attended}}
@@ -1984,7 +2059,7 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//	Best wishes,
 	//		Josie
 	//
-	//	===T_clone.Lookup("templ1.txt"):&{name:templ1.txt Tree:0xc0000e8800 common:0xc00003e3c0 leftDelim: rightDelim:}
+	//	===T_clone.Lookup("templ1.txt"):&{name:templ1.txt Tree:0xc0000b6700 common:0xc0000c8a80 leftDelim: rightDelim:}
 	//	===T_clone.Lookup("templ1.txt"):亲爱的：{{.Name}}
 	//	{{if .Attended}}
 	//	It was 这是我自定义的模板templ111,a pleasure to see you at the wedding.{{else}}
@@ -1992,7 +2067,7 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//	{{with .Gift}}Thank you for the lovely {{.}}.
 	//	{{end}}
 	//
-	//	===T_clone.Lookup("templ2.txt"):&{name:templ2.txt Tree:0xc0000e8900 common:0xc00003e3c0 leftDelim: rightDelim:}
+	//	===T_clone.Lookup("templ2.txt"):&{name:templ2.txt Tree:0xc0000b6800 common:0xc0000c8a80 leftDelim: rightDelim:}
 	//	===T_clone.Lookup("templ2.txt"):亲爱的：{{.Name}}
 	//	{{if .Attended}}
 	//	It was 这是我自定义的模板templ222,a pleasure to see you at the wedding.{{else}}
@@ -2001,6 +2076,10 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//	{{end}}
 	//
 	//	===T_clone.Lookup("templ3.txt"):<nil>
+	//	===T_clone.Lookup("templ3.txt"):&{name:templ3.txt Tree:0xc0000b6b00 common:0xc0000c8a80 leftDelim: rightDelim:}
+	//	===T_clone.Lookup("templ3.txt"):这里是templ3.txt模板内容啊
+	//template: letter:1: unexpected EOF
+	//	===T_clone.Lookup("templ33.txt"):<nil>
 	//	---下面讲解一个非常重要的知识点---
 	//
 	//		Input: "the go programming language"
@@ -2122,27 +2201,27 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//	索引为：1，值为：121
 	//	索引为：2，值为：122
 	//
-	//	Output 51: 索引为：0，值为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	Output 51: 索引为：0，值为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
-	//	索引为：1，值为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	索引为：1，值为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
-	//	索引为：2，值为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	索引为：2，值为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
 	//
 	//	Output 52: 索引为：0，值为：120
 	//	索引为：1，值为：121
 	//	索引为：2，值为：122
 	//
 	//	Output 53: [97 98 99]
-	//	Output 53.5: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	Output 53.5: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
-	//	Output 53.6: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	Output 53.6: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
 	//
 	//	Output 54: [97 98 99]
 	//	Output 55: xx88yy
@@ -2161,16 +2240,16 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//	Output 67: xx
 	//	Output 68: yy
 	//
-	//	Output 69: else:dot为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	Output 69: else:dot为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
-	//	$为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	$为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
 	//	Output 70: dot为：111
-	//	$为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	$为：map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
 	//	Output 71: 当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
 	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！
@@ -2180,14 +2259,33 @@ a comment（这是多行注释，不会被解析到模板中去）
 	//	Output 74: [b]
 	//	Output 75:
 	//	Output 76: [a b c d e f]
-	//	Output 77: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	Output 77: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
-	//	Output 78: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x516760 callDividefunc1:0x516530 callDividefunc2:0x516580 callDividefunc3:0x516640 callDividefunc4:0x516720 callDividefunc5:0x516740 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	Output 78: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
 	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
-	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x516790 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
 	//	Output 79: [b]
-
+	//	Output 80: map[OperationArg0:10 OperationArg1:55 OperationArg2:0 array:[97 98 99] callAddfunc1:0x517530 callDividefunc1:0x517300 callDividefunc2:0x517350 callDividefunc3:0x517410 callDividefunc4:0x5174f0 callDividefunc5:0x517510 callexp:title eqArg0:0 eqArg1:1 eqArg2:1 eqbool0:false eqbool1:true eqbool2:true eqstr1:anko eqstr2:anko eqstr3:anko33 htmlexp:<html><body><h1>我的第一个标题</h1><p>我的第一个段落。</p></body></html> jsexp:<script src="http://www.w3school.com.cn/a\\b\demo/myScript.js"></script> ls:[97 98 99] map:map[key1:97 key2:98 key3:99] multiStr:当美容院向你推出一种价格不菲的新服务——蜗牛爬脸美容，
+	//	你敢试吗？蜗牛爬脸美容，意在让肌肤吸取蜗牛粘液，
+	//	从而达到美容的效果。在你大胆一试之前，不妨先了解一下蜗牛吧！ myslice:[120 121 122] p1:{anko1 24 false 300093.58} p2:0xc0001563f0 p2_m:0x51a840 slice:[97 98 99] slice1:[a b c d e f] slice1fun:0x517560 urlexp:http://www.w3school.com.cn/a\\b\demo/myScript.js word:the go programming language]
+	//	Output 81: {anko1 24 false 300093.58}
+	//	Output 82: anko1 24 false 300093.58
+	//	Output 83: {anko2 14 true 3030.58}
+	//	Output 84: anko2 14 true 3030.58
+	//	Output 85: anko214 true 3030.58
+	//	Output 86: anko214 true 3030.58
+	//
+	//	Output 87: 14
+	//
+	//
+	//	Output 90: 14
+	//	Output 91: <no value>
+	//	Output 92: <no value>
+	//	Output 93: <no value>
+	//	Output 94:
+	//
+	//	Output 95: [a 1 true 3.5 (2+3i) <nil> <nil>]
 
 	fmt.Println("-------------继续探讨template对象之Templates()输出绑定的模板列表---------------")
 	// Templates returns a slice of defined templates associated with t.
@@ -2833,7 +2931,25 @@ func createTestDir(files []templateFile) string {
 	return dir
 }
 
-
+type person struct {
+	Name string
+	Age int
+	Isstu bool
+	Worth float64
+}
+//此对象用于展示错误用法
+func (p *person)OutName()  {//必须大写，公开，下同，否则会报错查找不到对应的字段，
+	// 注意这个方法是没有返回值的！所以在模板中调用这个方法是会报错的
+	fmt.Println(p.Name)
+}
+func (p *person)GetAge() int  {
+	return p.Age
+}
+//此对象用于展示错误用法
+func (p *person)SetWorth(worth float64)   {
+	// 注意这个方法是没有返回值的！所以在模板中调用这个方法是会报错的
+	p.Worth=worth
+}
 
 func testTemplateParseGlobAndParseFiles() {
 	// Here we demonstrate loading a set of templates from a directory.

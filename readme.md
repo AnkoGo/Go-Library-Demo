@@ -1,3 +1,5 @@
+#  《Go标准库例子大全	Go-Library-Demo》
+
 #  项目特点：
 
 - 涵盖广，细节深，全网较全较深的go库学习笔录，目前没有之一！
@@ -63,7 +65,7 @@
 11. database/sql/driver：
 	-  **[database/sql/driver](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sql_driver.go)**  
 12. encoding：
-	-  **[encoding](#)**  
+	-  **[encoding](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding.md)**  
 13. encoding/ascii85：
 	-  **[encoding/ascii85](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/encoding_ascii85.go)**  
 14. encoding/asn1：
@@ -105,13 +107,13 @@
 28. log：
 	-  **[log](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/log.go)**  
 29. log/syslog：
-	-  **[log/syslog](#)**  
+	-  **[log/syslog](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/log_syslog.md)**  
 30. math：
 	-  **[math](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_01.go)**  
 31. math/big：
 	-  **[math/big](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_big.go)**  
 32. math/cmplx：
-	-  **[math/cmplx](#)**  
+	-  **[math/cmplx](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_cmplx.md)**  
 33. math/rand：
 	-  **[math/rand](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
 34. os：
@@ -154,23 +156,27 @@
 	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_02.go)** 
 47. text/template：
 	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_01.go)**  
-48. time：
+48. text/template/parse：
+	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_parse.md)**  
+49. time：
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_01.go)** 
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_02.go)** 
-49. unicode：
+50. unicode：
 	-  **[unicode](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_01.go)**  
-50. unicode/utf16：
-	-  **[unicode/utf16](#)**  
-51. unicode/utf8：
+51. unicode/utf16：
+	-  **[unicode/utf16](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf16.md)**  
+52. unicode/utf8：
 	-  **[unicode/utf8](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf8_01.go)**  
 
 
-# 后续跟新：
-本项目会不断的修复旧的go库笔记和跟新还没写的go库笔记的！请多多关注！如果遇到问题请发问！喜欢hub主的话可以给个小星星！感谢！  
+# 后续更新：
+本项目会不断的修复旧的go库笔记，同时更新未写的go库笔记！请多多关注！
+
+如果遇到问题请发问！喜欢hub主的话可以给个小星星！感谢！  
 
 #  贡献者：
 
-	- @AnkoGo
+- [@AnkoGo](https://github.com/AnkoGo)
 
 # 联系与交流： 
 - anko：2930546527@qq.com
