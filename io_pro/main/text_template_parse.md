@@ -39,12 +39,14 @@ input就是上面的字符串中的第一行“Input: {{printf "%q" .word}}”�
 
 Template>Tree>ListNode>[]Node,然后每个Node对象都有以下的字段：
 
-	- NodeType : Node的类型，很多！下面会列举出来
-	- Pos : 该Node的字符串（也就是Ident字段或者Text字段中的字符串）在整个解析过程中的整体字符串中的起始位置。
-	- tr : 所属树的指针
-	- Text : 该节点封装且符合该节点类型的文本字符串
-	- Ident : 该节点封装且符合该节点类型的文本字符串切片，跟Text差不多，但是接受多个关键字，这些关键字是运行模板方法execute()中指定的第二个参数对象包含的对象名称，比如在你的当前代码中搜索“m:=map[string]interface{}”，你会看到这个：
-	> ![image-20191201185235815](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201185235815.png)
+```go
+- NodeType : Node的类型，很多！下面会列举出来
+- Pos : 该Node的字符串（也就是Ident字段或者Text字段中的字符串）在整个解析过程中的整体字符串中的起始位置。
+- tr : 所属树的指针
+- Text : 该节点封装且符合该节点类型的文本字符串
+- Ident : 该节点封装且符合该节点类型的文本字符串切片，跟Text差不多，但是接受多个关键字，这些关键字是运行模板方法execute()中指定的第二个参数对象包含的对象名称，比如在你的当前代码中搜索“m:=map[string]interface{}”，你会看到这个：
+```
+>  ![image-20191201185235815](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201185235815.png)
 
 而word这个字符串就在第一行，相信你已经注意到了更多的信息，Ident是属于NodeFiled类型的Node才会拥有，而Text是NodeString类型才会拥有，NodeString(16)类型和NodeFiled(8)类型后面的16和8是该类型对象对应的值，每一个Node的类别对象都是对应一个整形数字，如下：
 
@@ -54,13 +56,13 @@ const (
 	NodeText       NodeType = iota // Plain text.//文本类型节点
 	NodeAction                     // A non-control action such as a field evaluation.
 	NodeBool                       // A boolean constant.//boolean类型节点
-	NodeChain                      // A sequence of field accesses.//链式调用字段类型节点（如.x.y，常用语map或者slice,array）
+	NodeChain// A sequence of field accesses.//链式调用字段类型节点（如.x.y，常用语map或者slice,array）
     NodeCommand                    // An element of a pipeline.//整个命令行{{开头，}}结尾的节点
     NodeDot                        // The cursor, dot.//{{.}}节点
     nodeElse                       // An else action. Not added to tree.//{{else}}独立节点
     nodeEnd                        // An end action. Not added to tree.//{{end}}独立节点
 	NodeField                      // A field or method name.//一个字段或者方法名称节点（相对于结构体）
-	NodeIdentifier                 // An identifier; always a function name.//一个内置或者自定义函数名称的节点
+	NodeIdentifier// An identifier; always a function name.//一个内置或者自定义函数名称的节点
 	NodeIf                         // An if action.//if语句块节点
 	NodeList                       // A list of Nodes.//Nodes列表节点
 	NodeNil                        // An untyped nil constant.//未绑定类型的nil常量的节点
@@ -68,7 +70,7 @@ const (
 	NodePipe                       // A pipeline of commands.//pipeline管道符连接的节点
 	NodeRange                      // A range action.//range语句块保存的节点
 	NodeString                     // A string constant.//一个字符串常量节点
-    NodeTemplate                   // A template invocation action.//使用关键字template执行模板时候的节点
+    NodeTemplate// A template invocation action.//使用关键字template执行模板时候的节点
 	NodeVariable                   // A $ variable.//$声明变量后保存变量的类型节点
 	NodeWith                       // A with action.//with语句块类型节点
 )
