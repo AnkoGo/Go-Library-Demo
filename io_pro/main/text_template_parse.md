@@ -44,7 +44,9 @@ Template>Tree>ListNode>[]Node,然后每个Node对象都有以下的字段：
 - Pos : 该Node的字符串（也就是Ident字段或者Text字段中的字符串）在整个解析过程中的整体字符串中的起始位置。
 - tr : 所属树的指针
 - Text : 该节点封装且符合该节点类型的文本字符串
-- Ident : 该节点封装且符合该节点类型的文本字符串切片，跟Text差不多，但是接受多个关键字，这些关键字是运行模板方法execute()中指定的第二个参数对象包含的对象名称，比如在你的当前代码中搜索“m:=map[string]interface{}”，你会看到这个：
+- Ident : 该节点封装且符合该节点类型的文本字符串切片，跟Text差不多，但是接受多个关键字，
+这些关键字是运行模板方法execute()中指定的第二个参数对象包含的对象名称，
+比如在你的当前代码中搜索“m:=map[string]interface{}”，你会看到这个：
 ```
 >  ![image-20191201185235815](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/pic/image-20191201185235815.png)
 
