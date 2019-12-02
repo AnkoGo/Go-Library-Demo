@@ -15,7 +15,7 @@
 
 go版本：1.13.x
 
-外置包：[go-sql-driver](github.com/go-sql-driver/mysql)
+外置包：[go-sql-driver](https://github.com/go-sql-driver/mysql)
 
 # 下载和执行须知：  
 在这里需要特别指出的是，鉴于学识有限，此项目会存在以下问题：
