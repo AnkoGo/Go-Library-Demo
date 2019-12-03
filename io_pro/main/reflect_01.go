@@ -433,26 +433,66 @@ func main() {
 	//	C:/Users/Administrator/Desktop/go_pro/src/io_pro/main3/compress_zlib.go:438 +0x2ad4
 	//从上面可以知道他的返回值是一个很复杂的结构，其实是type Method struct类型，下面是这个类型的说明：
 
-	/*
-	 * The compiler knows the exact layout of all the data structures above.
-	 * The compiler does not know about the data structures and methods below.
-	 */
 
-	// Method represents a single method.（Method代表一个单一的方法对象）
+	fmt.Println("---------reflect.Method对象----------")
+	//// Method represents a single method.
+	////Method代表一个方法。
 	//type Method struct {
-	//	// Name is the method name.（Name是方法的名字）
-	//	// PkgPath is the package path that qualifies a lower case (unexported)（PkgPath是一个方法的包路径（头字母小写的包名不可导出！头字母大写的包名可导出！））
+	//	// Name is the method name.
+	//	// PkgPath is the package path that qualifies a lower case (unexported)
 	//	// method name. It is empty for upper case (exported) method names.
 	//	// The combination of PkgPath and Name uniquely identifies a method
 	//	// in a method set.
 	//	// See https://golang.org/ref/spec#Uniqueness_of_identifiers
+	//	// Name是方法名称。
+	//	// PkgPath是限定小写（未导出）方法名称的程序包路径。 大写（导出）的方法名称为空。
+	//	// PkgPath和Name的组合唯一标识 方法集 中的方法。
+	//	//参见https://golang.org/ref/spec#Uniqueness_of_identifiers
 	//	Name    string
 	//	PkgPath string
 	//
-	//	Type  Type  // method type
-	//	Func  Value // func with receiver as first argument
-	//	Index int   // index for Type.Method
+	//	Type  Type  // method type//方法的类型
+	//	Func  Value // func with receiver as first argument	//以接收者为第一个参数的func
+	//	Index int   // index for Type.Method	// Type.Method的索引
 	//}
+
+	fmt.Println("---------通过类实例调用方法----------")
+	var Cal =Calculate{}
+	ret := reflect.ValueOf(&Cal).MethodByName("Add").Call([]reflect.Value{reflect.ValueOf(3),reflect.ValueOf(4)})
+	fmt.Println(ret)
+	for key, value := range ret {
+		fmt.Println(key,value)
+	}
+
+
+	fmt.Println("---------通过类调用方法----------")
+
+	method, ok := reflect.TypeOf(&Cal).MethodByName("Add")
+	if ok{
+		fmt.Println("method.Name",method.Name)
+		fmt.Println("method.Type",method.Type)
+		fmt.Println("method.PkgPath",method.PkgPath)
+		fmt.Println("method.Index",method.Index)
+		fmt.Println("method.Func",method.Func)
+
+		ret = method.Func.Call([]reflect.Value{reflect.ValueOf(&Cal),reflect.ValueOf(3),reflect.ValueOf(4)})
+		fmt.Println(ret)
+		for key, value := range ret {
+			fmt.Println(key,value)
+		}
+	}
+	//输出：
+	//	[<int Value>]
+	//	0 7
+	//	-------------------
+	//	method.Name Add
+	//	method.Type func(*main.Calculate, int, int) int
+	//	method.PkgPath
+	//	method.Index 0
+	//	method.Func 0x4c8480
+	//	[<int Value>]
+	//	0 7
+
 
 	// MethodByName returns the method with that name in the type's
 	// method set and a boolean indicating if the method was found.
@@ -2421,6 +2461,14 @@ func main() {
 	fmt.Println()
 	//好了，几乎讲光了这个反射包的重点了
 
+}
+type Calculate struct {
+
+}
+
+
+func (C *Calculate) Add(x,y int) int {
+	return x+y
 }
 
 func ExampleStructTag_Lookup() {
