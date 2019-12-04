@@ -33,6 +33,13 @@ go版本：1.13.x
 - 关于侵权问题，本项目开源，不获取任何利益！如果有其他的任何侵权问题，请私信我2930546527@qq.com  
 - 本项目主要是对自己3个月以来的学习的总结！希望交到更多同道的朋友！  
 
+#  最近更新速览：
+
+27. html：
+	-  **[html](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html.go)**  
+28. html/template：
+	-  **[html/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html_template.go)**  
+
 # 目录导航  
 
 1. archive/tar： 
@@ -107,73 +114,77 @@ go版本：1.13.x
 	-  **[fmt](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/fmt.go)**  
 26. io：
 	-  **[io](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_01.go)**  
-27. io/ioutil：
+27. html：
+	-  **[html](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html.go)**  
+28. html/template：
+	-  **[html/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html_template.go)**  
+29. io/ioutil：
 	-  **[io/ioutil](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_ioutil_01.go)** 
 	-  **[io/ioutil](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/io_ioutil_02.go)**  
-28. log：
+30. log：
 	-  **[log](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/log.go)**  
-29. log/syslog：
+31. log/syslog：
 	-  **[log/syslog](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/log_syslog.md)**  
-30. math：
+32. math：
 	-  **[math](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_01.go)**  
-31. math/big：
+33. math/big：
 	-  **[math/big](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_big.go)**  
-32. math/cmplx：
+34. math/cmplx：
 	-  **[math/cmplx](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_cmplx.md)**  
-33. math/rand：
+35. math/rand：
 	-  **[math/rand](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
-34. os：
+36. os：
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_02.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_03.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_04.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_05.go)** 
-35. os/exec：
+37. os/exec：
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_01.go)** 
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_02.go)** 
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_03.go)** 
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_04.go)** 
-36. os/signal：
+38. os/signal：
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_01.go)** 
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_02.go)**
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_03.go)**  
-37. os/user：
+39. os/user：
 	-  **[os/user](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_user_01.go)**  
-38. path：
+40. path：
 	-  **[path](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_01.go)**  
-39. path/filepath：
+41. path/filepath：
 	-  **[path/filepath](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_filepath.go)**  
-40. reflect：
+42. reflect：
 	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)** 
 	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_02.go)**
 	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_03.go)**  
-41. regexp：
+43. regexp：
 	-  **[regexp](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp.go)**  
-42. regexp/syntax：
+44. regexp/syntax：
 	-  **[regexp/syntax](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp_syntax.go)**  
-43. sort：
+45. sort：
 	-  **[sort](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sort_01.go)** 
-44. strconv：
+46. strconv：
 	-  **[strconv](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/strconv_01.go)**   
-45. Strings+bytes：
+47. Strings+bytes：
 	-  **[bytes+Strings](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bytes%2Bstrings_01.go)**   
-46. text/scanner：
+48. text/scanner：
 	-  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_01.go)** 
 	-  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_02.go)** 
-47. text/tabwriter：
+49. text/tabwriter：
 	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_01.go)** 
 	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_02.go)** 
-48. text/template：
+50. text/template：
 	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_01.go)**  
-49. text/template/parse：
+51. text/template/parse：
 	-  **[text/template/parse](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_parse.md)**  
-50. time：
+52. time：
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_01.go)** 
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_02.go)** 
-51. unicode：
+53. unicode：
 	-  **[unicode](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_01.go)**  
-52. unicode/utf16：
+54. unicode/utf16：
 	-  **[unicode/utf16](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf16.md)**  
-53. unicode/utf8：
+55. unicode/utf8：
 	-  **[unicode/utf8](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf8_01.go)**  
 
 
