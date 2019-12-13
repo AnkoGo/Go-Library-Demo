@@ -785,6 +785,42 @@ func Example_formats() {
 	//	61 e2 8c 98
 	//	1973-11-29 21:33:09 +0000 UTC "1973-11-29 21:33:09 +0000 UTC"
 }
+
+func testVerb() {
+	arr:=[]byte{'a','b'}
+
+	fmt.Printf("%#p\n",&arr)//自动获取地址值并输出16进制
+	fmt.Printf("%#v\n",&arr)//默认格式（十进制）
+	fmt.Printf("%#b\n",&arr)//二进制
+	fmt.Printf("%#x\n",&arr)//16进制
+	fmt.Printf("%#d\n",&arr)//十进制
+	fmt.Printf("%#v\n",unsafe.Pointer(&arr))//只能先获取地址值然后再用%v打印出来，此时%v底层调用%p获取
+	fmt.Printf("%#d\n",unsafe.Pointer(&arr))//只能先获取地址值然后再用%d打印出来上面16进制转换后的10进制地址值。
+
+
+	fmt.Println("---------")
+	c:=make(chan int,2)
+	fmt.Printf("%#v\n",&c)
+	fmt.Printf("%#p\n",&c)
+	//从上面可知，填充%v的值类型为unsafe.Pointer或者chan（chan类族，不是单一类型）时候才会等同(注意我说的是等同，不是等效)于%p打
+	// 印出16进制的地址值，其他类型都不会打印出地址值
+
+	//#号对于%d来说无效，对于%p来说省略0x开头，对于进制%b...等动词来说打印出对应的0b等,对于其他类型则直接打印出类型名+后面的
+	// 动词打印出来的东西
+	
+	//输出：
+	//	c0000044a0
+	//	&[]uint8{0x61, 0x62}
+	//	&[]uint8{0x61, 0x62}
+	//	&[0b1100001 0b1100010]
+	//	&0x6162
+	//	&[97 98]
+	//	(unsafe.Pointer)(0xc0000044a0)
+	//	824633738400
+	//	---------
+	//	(*chan int)(0xc000006030)
+	//	c000006030
+}
 func main()  {
 	//ExampleErrorf()
 	//ExampleFscanf()
@@ -801,5 +837,6 @@ func main()  {
 	//ExampleFprintln()
 	//ExampleFprintf()
 	//Example_printers()
-	Example_formats()
+	//Example_formats()
+	testVerb()
 }
