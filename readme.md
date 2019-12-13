@@ -39,6 +39,11 @@ go版本：1.13.x
 	-  **[html](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html.go)**  
 28. html/template：
 	-  **[html/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html_template.go)**  
+56. 进制转换：
+	-  **[BaseConversion](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/BaseConversion.go)** 
+57. utf8编码解码转换外置包：
+	-  **[golang.org.x.text](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/golang.org.x.text.go)** 
+	-  **[github.com.axgle.mahonia](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/github.com.axgle.mahonia.go)** 
 
 # 目录导航  
 
@@ -139,10 +144,7 @@ go版本：1.13.x
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_04.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_05.go)** 
 37. os/exec：
-	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_01.go)** 
-	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_02.go)** 
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_03.go)** 
-	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_04.go)** 
 38. os/signal：
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_01.go)** 
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_02.go)**
@@ -186,7 +188,12 @@ go版本：1.13.x
 	-  **[unicode/utf16](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf16.md)**  
 55. unicode/utf8：
 	-  **[unicode/utf8](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf8_01.go)**  
-
+56. 进制转换：
+	-  **[BaseConversion](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/BaseConversion.go)** 
+57. utf8编码解码转换外置包：
+	-  **[golang.org.x.text](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/golang.org.x.text.go)** 
+	-  **[github.com.axgle.mahonia](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/github.com.axgle.mahonia.go)** 
+	
 
 # 持续更新：
 本项目会不断的修复旧的go库笔记，同时更新未写的go库笔记！请多多关注！
