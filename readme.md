@@ -35,10 +35,6 @@ go版本：1.13.x
 
 #  最近更新速览：
 
-27. html：
-	-  **[html](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html.go)**  
-28. html/template：
-	-  **[html/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/html_template.go)**  
 56. 进制转换：
 	-  **[BaseConversion](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/BaseConversion.go)** 
 57. utf8编码解码转换外置包：
@@ -145,6 +141,7 @@ go版本：1.13.x
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_05.go)** 
 37. os/exec：
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_03.go)** 
+	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/github.com.axgle.mahonia.go)** 
 38. os/signal：
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_01.go)** 
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_02.go)**
