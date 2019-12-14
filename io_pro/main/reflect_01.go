@@ -2460,6 +2460,59 @@ func main() {
 
 	fmt.Println()
 	//好了，几乎讲光了这个反射包的重点了
+	
+	
+	//2019.12.14更新以下内容：
+	//主要是为了探究go的可寻址和不可寻址 以及 可设置和不可设置的真正理解
+	type Person1 struct {
+		name string
+		sex uint8
+		age uint8
+		list [][]string
+	}
+	testCanAddr := func() {
+		p2:=Person1{"luck",0,100,[][]string{{"2"}}}
+		p3:=Person1{"luck1",1,200,[][]string{{"22"}}}
+		s:=map[int]Person1{}//存的是Person1类型的实例对象的值，copy一份参数值存到map中去，这个参数值既不是内存地址值，也
+		// 没任何的变量索引着他，只能通过键来查询到它！但是却不能通过直接的内存地址来查询到它，所以他确实是不可寻址的参数值！好比如下面：
+		// &"hello"这样是错误的！"hello"这个参数值确实是存在一个内存地址上面，但是这个内存地址并没有被你用变量来存着，导致go编译器找不到对应的变量来索引你的内存地址！
+		// var s="hello";&s这样是正确的，s代表的是一个内存地址！
+
+		//s:=map[int]*Person1{}//按照上面思路可进行推理：第一，*Person1是一个内存地址值么？如果是，那么就是可寻址的！很明显这里是一个内存地址值！
+		// 											第二，*Person1有变量索引着他么？很明显这里没有！事实上第二点跟第一点是一样的！变量其实就是内存地址值！编译后运行时候
+		// 											不存在变量！只存在随机的内存地址值
+		s[1]=p2
+		s[2]=p3
+		//fmt.Println(reflect.ValueOf(&(s[2])).Elem().CanAddr())//错误，s[2]不是一个内存地址值，而是一个参数
+		s2:=s[2]
+		fmt.Println(reflect.ValueOf(&(s2)).Elem().CanAddr())//正确，s2是一个内存地址值，不是一个参数
+		//s[2].name="sdsdsd"//因为是map[int]Person1，而不是map[int]*Person1类型，所以前者是不可寻址的！也就是不可设置值的！
+		//s[2].list=[][]string{{"张三"}}
+		fmt.Println(s[2])
+
+
+
+		//下面是验证字符串是否可被寻址！其实某个变量的（或者说某个内存地址上的）字符串是可以被更改的！不能更改的是字符串上面的某个元素，因为这些元素没有任何的变量索引着他！
+		fmt.Println()
+		var p string="hello"
+		fmt.Println(p)
+		fmt.Println(reflect.ValueOf(&p).Elem().CanAddr())
+		fmt.Println(reflect.ValueOf(&p).Elem().Addr())
+		p="word"//语句2
+		fmt.Println(reflect.ValueOf(&p).Elem().Addr())
+		fmt.Println(p)
+		
+	}
+	testCanAddr()
+	//输出：
+	//	true
+	//	{luck1 1 200 [[22]]}
+	//
+	//	hello
+	//	true
+	//	0xc000032210
+	//	0xc000032210
+	//	word
 
 }
 type Calculate struct {
