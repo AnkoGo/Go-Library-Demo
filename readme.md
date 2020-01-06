@@ -40,9 +40,10 @@ go版本：1.13.x
 #  最近更新速览：
 
 36. net：
-	-  **[net](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**  
+	-  **[net](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/net.go)**  
 	
 #  正在进行：
+
 	-  **net/http**
 	
 
@@ -140,7 +141,7 @@ go版本：1.13.x
 35. math/rand：
 	-  **[math/rand](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
 36. net：
-	-  **[net](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
+	-  **[net](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/net.go)**   
 37. os：
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_02.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_03.go)** 
