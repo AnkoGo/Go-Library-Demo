@@ -39,11 +39,12 @@ go版本：1.13.x
 
 #  最近更新速览：
 
-56. 进制转换：
-	-  **[BaseConversion](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/BaseConversion.go)** 
-57. utf8编码解码转换外置包：
-	-  **[golang.org.x.text](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/golang.org.x.text.go)** 
-	-  **[github.com.axgle.mahonia](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/github.com.axgle.mahonia.go)** 
+36. net：
+	-  **[net](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**  
+	
+#  正在进行：
+	-  **net/http**
+	
 
 # 目录导航  
 
@@ -138,60 +139,62 @@ go版本：1.13.x
 	-  **[math/cmplx](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_cmplx.md)**  
 35. math/rand：
 	-  **[math/rand](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
-36. os：
+36. net：
+	-  **[net](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/math_rand.go)**   
+37. os：
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_02.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_03.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_04.go)** 
 	-  **[os](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_05.go)** 
-37. os/exec：
+38. os/exec：
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_exec_03.go)** 
 	-  **[os/exec](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/github.com.axgle.mahonia.go)** 
-38. os/signal：
+39. os/signal：
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_01.go)** 
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_02.go)**
 	-  **[os/signal](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_signal_03.go)**  
-39. os/user：
+40. os/user：
 	-  **[os/user](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/os_user_01.go)**  
-40. path：
+41. path：
 	-  **[path](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_01.go)**  
-41. path/filepath：
+42. path/filepath：
 	-  **[path/filepath](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/path_filepath.go)**  
-42. reflect：
+43. reflect：
 	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_01.go)** 
 	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_02.go)**
 	-  **[reflect](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/reflect_03.go)**  
-43. regexp：
+44. regexp：
 	-  **[regexp](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp.go)**  
-44. regexp/syntax：
+45. regexp/syntax：
 	-  **[regexp/syntax](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/regexp_syntax.go)**  
-45. sort：
+46. sort：
 	-  **[sort](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/sort_01.go)** 
-46. strconv：
+47. strconv：
 	-  **[strconv](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/strconv_01.go)**   
-47. Strings+bytes：
+48. Strings+bytes：
 	-  **[bytes+Strings](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/bytes%2Bstrings_01.go)**   
-48. text/scanner：
+49. text/scanner：
 	-  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_01.go)** 
 	-  **[text/scanner](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_scanner_02.go)** 
-49. text/tabwriter：
+50. text/tabwriter：
 	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_01.go)** 
 	-  **[text/tabwriter](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_tabwriter_02.go)** 
-50. text/template：
+51. text/template：
 	-  **[text/template](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_01.go)**  
-51. text/template/parse：
+52. text/template/parse：
 	-  **[text/template/parse](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/text_template_parse.md)**  
-52. time：
+53. time：
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_01.go)** 
 	-  **[time](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/time_02.go)** 
-53. unicode：
+54. unicode：
 	-  **[unicode](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_01.go)**  
-54. unicode/utf16：
+55. unicode/utf16：
 	-  **[unicode/utf16](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf16.md)**  
-55. unicode/utf8：
+56. unicode/utf8：
 	-  **[unicode/utf8](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/unicode_utf8_01.go)**  
-56. 进制转换：
+57. 进制转换：
 	-  **[BaseConversion](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/BaseConversion.go)** 
-57. utf8编码解码转换外置包：
+58. utf8编码解码转换外置包：
 	-  **[golang.org.x.text](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/golang.org.x.text.go)** 
 	-  **[github.com.axgle.mahonia](https://github.com/AnkoGo/Go-Library-Demo/blob/master/io_pro/main/github.com.axgle.mahonia.go)** 
 	
