@@ -9,7 +9,7 @@
   - 目前目录结构较为混乱，代码注释不大整齐！
 
 # 涵盖度：
-目前大部分库基本写了，除了net，syscall，context包外！目前不打算写runtime，debug包以及加密包！
+目前大部分库基本写了，除了syscall，context包外！目前不打算写runtime，debug包以及加密包！
 
 #  执行环境：
 
